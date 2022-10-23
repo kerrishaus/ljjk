@@ -35,21 +35,23 @@ export class Triggerable extends DynamicMesh
     onTrigger(object)
     {
         if (this.triggeringObjects.includes(object))
-            return;
+            return false;
         
         this.triggered = true;
         this.triggeringObjects.push(object);
         
         this.triggerObject.material.color.setHex(0x00ff00);
+
+        return true;
     }
     
     onStopTrigger(object)
     {
         if (!this.triggered)
-            return;
+            return false;
             
         if (!this.triggeringObjects.includes(object))
-            return;
+            return false;
             
         this.triggeringObjects.splice(this.triggeringObjects.indexOf(object), 1);
         

@@ -6,6 +6,7 @@ import * as MathUtility from "../MathUtility.js";
 import * as PageUtility from "../PageUtility.js";
 
 import { Triggerable } from "../geometry/Triggerable.js";
+import { DialogTile } from "../tiles/DialogTile.js";
 
 export class PlayState extends State
 {
@@ -169,10 +170,20 @@ export class PlayState extends State
                   this.move = null;
         });
 
+        /*
+        // TODO: don't do this during dev
         window.onbeforeunload = function(event)
         {
             return 'You will lose unsaved progress, are you sure?';
         };
+        */
+
+        // TODO: move this out of here later, this is just proof of concept
+
+        const dialog = new DialogTile();
+        dialog.position.x = 10;
+
+        scene.add(dialog);
 
         console.log("PlayState is ready.");
 
@@ -239,7 +250,7 @@ export class PlayState extends State
     
     animate()
     {
-        requestAnimationFrame(() => this.animate());
+        window.currentRequestFrame = requestAnimationFrame(() => this.animate());
 
         const deltaTime = this.clock.getDelta();
 
@@ -319,6 +330,8 @@ export class PlayState extends State
                 else if (object.triggeringObjects.includes(player))
                     object.onStopTrigger(player);
 
+                /*
+                // TODO: change this to entity
                 for (const customer of shop.customers)
                 {
                     // customer intersects with Triggerable's trigger
@@ -336,6 +349,7 @@ export class PlayState extends State
                             object.onStopTrigger(customer);
                     }
                 }
+                */
             }
         });
 
