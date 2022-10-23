@@ -182,7 +182,7 @@ export class PlayState extends State
 
         // TODO: move this out of here later, this is just proof of concept
 
-        const dialog = new DialogTile("get fucked loser");
+        const dialog = new DialogTile("hello i am dialog");
         dialog.position.x = 10;
 
         scene.add(dialog);
