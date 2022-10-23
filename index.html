@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- https://html2app.dev/ saved for later -->
+		<title>LJJK &bull; Kerris Haus Games</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		
+		<script src="https://kerrishaus.com/assets/scripts/jquery-3.6.0.min.js"></script>
+        
+		<script src="https://portal.kerrishaus.com/assets/javascript/messages.js"></script>
+		<link rel='stylesheet' href='https://portal.kerrishaus.com/assets/styles/messages.css'>
+
+		<link rel='stylesheet' href='https://portal.kerrishaus.com/assets/styles/flex-utility.css'>
+
+		<link rel='stylesheet' href='./styles/browserWindow.css'>
+	</head>
+
+	<body>
+		<script type='module' id="game">
+			import { StateMachine } from "./scripts/states/StateMachine.js";
+			import { StartupState } from "./scripts/states/StartupState.js";
+
+			let stateMachine = new StateMachine();
+
+			stateMachine.pushState(new StartupState());
+		</script>
+	</body>
+</html>
