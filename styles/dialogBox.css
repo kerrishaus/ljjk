@@ -1,0 +1,43 @@
+.dialogBox
+{
+    --animation-time: 0.5s;
+
+    box-sizing: border-box;
+
+    position: absolute;
+    z-index: 999;
+
+    background-color: #222222aa;
+    color: rgb(182, 182, 182);
+
+    padding: 100px;
+
+    width: 100vw;
+
+    opacity: 1;
+
+    transition: opacity var(--animation-time),
+                top var(--animation-time),
+                left var(--animation-time),
+                right var(--animation-time),
+                bottom var(--animation-time);
+}
+
+.dialogBox.bottom
+{
+    bottom: 0px;
+    left: 0px;
+}
+
+.dialogBox.bottom.hidden
+{
+    bottom: -100vh;
+}
+
+.dialogBox.hidden
+{
+    opacity: 0.5;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}

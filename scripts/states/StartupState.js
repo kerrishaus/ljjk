@@ -106,9 +106,10 @@ export class StartupState extends State
             freeControls.update();
             freeControls.enabled = false;
 
-            window.renderingDisabled     = false;
-            window.allControlsDisabled   = false;
-            window.entityUpdatesDisabled = false;
+            window.renderUpdatesEnabled  = true;
+            window.entityUpdatesEnabled  = true;
+            window.physicsUpdatesEnabled = true;
+            window.playerControlsEnabled = true;
 
             /*
             dracoLoader = new DRACOLoader();

@@ -16,6 +16,7 @@ export class PlayState extends State
         PageUtility.addStyle("banner");
         PageUtility.addStyle("interface");
         PageUtility.addStyle("buyMenu");
+        PageUtility.addStyle("dialogBox");
 
         $(document.body).append(`<div id='interface' class="gameInterfaceContainer">
         <div class='banner'>
@@ -42,6 +43,9 @@ export class PlayState extends State
             <div class='upgrades'>
                 
             </div>
+        </div>
+
+        <div class='dialogContainer'>
         </div>
     </div>`);
 
@@ -178,7 +182,7 @@ export class PlayState extends State
 
         // TODO: move this out of here later, this is just proof of concept
 
-        const dialog = new DialogTile();
+        const dialog = new DialogTile("get fucked loser");
         dialog.position.x = 10;
 
         scene.add(dialog);
@@ -203,7 +207,7 @@ export class PlayState extends State
         console.log("Cleaned up PlayState.");
     }
 
-    physicsStep(deltaTime)
+    physicsTick(deltaTime)
     {
         physicsWorld.stepSimulation(deltaTime, 10);
 
@@ -220,10 +224,10 @@ export class PlayState extends State
             object.quaternion.copy(quat3);
         }
 
-        detectCollision();
+        this.checkCollisions();
     }
 
-    detectCollision()
+    checkCollisions()
     {
         let dispatcher = physicsWorld.getDispatcher();
         let numManifolds = dispatcher.getNumManifolds();
@@ -254,7 +258,7 @@ export class PlayState extends State
         if (this.move === null)
             return;
 
-        if (allControlsDisabled)
+        if (!playerControlsEnabled)
             return;
 
         let position = new THREE.Vector2(), target = new THREE.Vector2();
@@ -315,15 +319,9 @@ export class PlayState extends State
         camera.position.y = player.position.y - 6;
         camera.lookAt(player.position);
     }
-    
-    animate()
+
+    entityTick(deltaTime)
     {
-        window.currentRequestFrame = requestAnimationFrame(() => this.animate());
-
-        const deltaTime = this.clock.getDelta();
-
-        this.playerMovement(deltaTime);
-
         scene.children.forEach((object) =>
         {
             if ('update' in object)
@@ -363,18 +361,35 @@ export class PlayState extends State
                 */
             }
         });
+    }
+    
+    animate()
+    {
+        window.currentRequestFrame = requestAnimationFrame(() => this.animate());
 
-        //physicsStep(deltaTime);
+        const deltaTime = this.clock.getDelta();
 
-        if (freeControls.enabled)
+        if (playerControlsEnabled)
+            this.playerMovement(deltaTime);
+
+        if (entityUpdatesEnabled)
+            this.entityTick(deltaTime);
+
+        if (physicsUpdatesEnabled)
+            this.physicsTick(deltaTime);
+
+        if (playerControlsEnabled && freeControls.enabled)
             freeControls.update();
 
-        /*
-        if (mixer)
-            mixer.update(deltaTime);
-        */
-        
-        composer.render();
-        htmlRenderer.render(scene, camera);
+        if (renderUpdatesEnabled)
+        {
+            /*
+            if (mixer)
+                mixer.update(deltaTime);
+            */
+            
+            composer.render();
+            htmlRenderer.render(scene, camera);
+        }
     };
 }

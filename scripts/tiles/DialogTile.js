@@ -1,15 +1,19 @@
 import { Vector3, Quaternion, TextureLoader, MeshStandardMaterial } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
+import { DialogBox } from "../dialog/DialogBox.js";
+
 import { Triggerable } from "../geometry/Triggerable.js";
 import { Player } from "../Player.js";
 
 export class DialogTile extends Triggerable
 {
-    constructor()
+    constructor(message)
     {
         super(6, 2, 8, 4, 0xad723e);
 
         this.name = "dialog";
+
+        this.dialog = new DialogBox(message);
     }
     
     update(deltaTime)
@@ -19,16 +23,12 @@ export class DialogTile extends Triggerable
 
     startDialog()
     {
-        console.log("starting dialog");
-
-        $("body").append("<div style='position:absolute; z-index: 1000; left: 50px; top: 100px; background-color: red; color: white;' id='dialogContainer'>hello!</div>");
+        this.dialog.presentDialog();
     }
 
     stopDialog()
     {
-        console.log("stopping dialog");
-
-        $("#dialogContainer").remove();
+        this.dialog.hideDialog();
     }
     
     onStartTrigger(object)
