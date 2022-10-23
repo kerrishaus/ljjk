@@ -58,7 +58,6 @@ export class PlayState extends State
         this.pointerMoveOrigin = new THREE.Vector2();
         this.moving = false;
         this.pointerMove = false;
-        this.freeCam = false;
         
         this.moveTarget = new THREE.Mesh(new THREE.SphereGeometry(0.25, 24, 8), new THREE.MeshPhongMaterial({ color: 0x00ffff, 
                                                                                                              flatShading: true,
@@ -122,14 +121,13 @@ export class PlayState extends State
 
             if (event.code == "KeyO")
             {
-                this.freeCam = !this.freeCam;
-                freeControls.enabled = this.freeCam;
+                freeControls.enabled = !freeControls.enabled;
 
                 camera.position.z = 10;
                 camera.position.y = -12;
                 camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-                console.log("freecam toggled");
+                console.log("FreeCamera has been toggled.");
             }
             else
             {
@@ -230,22 +228,92 @@ export class PlayState extends State
         let dispatcher = physicsWorld.getDispatcher();
         let numManifolds = dispatcher.getNumManifolds();
 
-        for ( let i = 0; i < numManifolds; i ++ )
+        for (let i = 0; i < numManifolds; i++)
         {
-            let contactManifold = dispatcher.getManifoldByIndexInternal( i );
+            let contactManifold = dispatcher.getManifoldByIndexInternal(i);
             let numContacts = contactManifold.getNumContacts();
 
-            for ( let j = 0; j < numContacts; j++ )
+            for (let j = 0; j < numContacts; j++)
             {
-                let contactPoint = contactManifold.getContactPoint( j );
+                let contactPoint = contactManifold.getContactPoint(j);
                 let distance = contactPoint.getDistance();
 
                 if (distance > 0.0)
                     continue;
 
-                console.log({manifoldIndex: i, contactIndex: j, distance: distance});
+                console.log({ manifoldIndex: i, contactIndex: j, distance: distance });
             }
         }
+    }
+
+    playerMovement(deltaTime)
+    {
+        if (freeControls.enabled)
+            return;
+
+        if (this.move === null)
+            return;
+
+        if (allControlsDisabled)
+            return;
+
+        let position = new THREE.Vector2(), target = new THREE.Vector2();
+        let velocity = 0;
+
+        if (this.move == this.MoveType.Touch)
+        {
+            position = this.pointerMoveOrigin;
+            target = this.mouse;
+
+            velocity = this.pointerMoveOrigin.distanceTo(new THREE.Vector3(this.mouse.x, this.mouse.y)) / 2;
+        }
+        else
+        {
+            if (this.move == this.MoveType.Keyboard)
+            {
+                const moveAmount = player.maxSpeed;
+
+                if (this.keys["KeyW"] || this.keys["ArrowUp"])
+                    this.moveTarget.translateY(moveAmount);
+                if (this.keys["KeyA"] || this.keys["ArrowLeft"])
+                    this.moveTarget.translateX(-moveAmount);
+                if (this.keys["KeyS"] || this.keys["ArrowDown"])
+                    this.moveTarget.translateY(-moveAmount);
+                if (this.keys["KeyD"] || this.keys["ArrowRight"])
+                    this.moveTarget.translateX(moveAmount);
+
+                this.moveTarget.quaternion.copy(player.quaternion);
+            }
+            else if (this.move == this.MoveType.Mouse)
+            {
+                this.raycaster.setFromCamera(this.mouse, camera);
+                this.raycaster.ray.intersectPlane(this.plane, this.intersects);
+                this.moveTarget.position.copy(this.intersects);
+            }
+
+            position.x = player.position.x;
+            position.y = player.position.y
+
+            target.x = this.moveTarget.position.x;
+            target.y = this.moveTarget.position.y;
+
+            velocity = player.position.distanceTo(this.moveTarget.position) / 20;
+        }
+
+        // set the player's direction
+        //player.rotation.z = Math.atan2(y2 - y1, x2 - x1) - 1.5708;
+        player.rotation.z = MathUtility.angleToPoint(position, target);
+
+        // clamp the player's velocity
+        velocity = MathUtility.clamp(velocity, 0, player.maxSpeed);
+
+        // move the player their direction
+        player.translateY(velocity);
+
+        // face the camera at the player
+        camera.position.x = player.position.x;
+        camera.position.y = player.position.y - 6;
+        camera.lookAt(player.position);
     }
     
     animate()
@@ -254,69 +322,7 @@ export class PlayState extends State
 
         const deltaTime = this.clock.getDelta();
 
-        if (!this.freeCam && this.move !== null)
-        {
-            let position = new THREE.Vector2(), target = new THREE.Vector2();
-            let velocity = 0;
-
-            if (this.move == this.MoveType.Touch)
-            {
-                position = this.pointerMoveOrigin;
-                target = this.mouse;
-
-                velocity = this.pointerMoveOrigin.distanceTo(new THREE.Vector3(this.mouse.x, this.mouse.y)) / 2;
-            }
-            else
-            {
-                if (this.move == this.MoveType.Keyboard)
-                {
-                    const moveAmount = player.maxSpeed;
-
-                    if (this.keys["KeyW"] || this.keys["ArrowUp"])
-                        this.moveTarget.translateY(moveAmount);
-                    if (this.keys["KeyA"] || this.keys["ArrowLeft"])
-                        this.moveTarget.translateX(-moveAmount);
-                    if (this.keys["KeyS"] || this.keys["ArrowDown"])
-                        this.moveTarget.translateY(-moveAmount);
-                    if (this.keys["KeyD"] || this.keys["ArrowRight"])
-                        this.moveTarget.translateX(moveAmount);
-
-                    this.moveTarget.quaternion.copy(player.quaternion);
-                }
-                else if (this.move == this.MoveType.Mouse)
-                {
-                    this.raycaster.setFromCamera(this.mouse, camera);
-                    this.raycaster.ray.intersectPlane(this.plane, this.intersects);
-                    this.moveTarget.position.copy(this.intersects);
-                }
-
-                position.x = player.position.x;
-                position.y = player.position.y
-
-                target.x = this.moveTarget.position.x;
-                target.y = this.moveTarget.position.y;
-
-                velocity = player.position.distanceTo(this.moveTarget.position) / 20;
-            }
-
-            // set the player's direction
-            //player.rotation.z = Math.atan2(y2 - y1, x2 - x1) - 1.5708;
-            player.rotation.z = MathUtility.angleToPoint(position, target);
-
-            // clamp the player's velocity
-            velocity = MathUtility.clamp(velocity, 0, player.maxSpeed);
-
-            // move the player their direction
-            player.translateY(velocity);
-        }
-
-        if (!this.freeCam)
-        {
-            // TODO: put the camera in Player
-            camera.position.x = player.position.x;
-            camera.position.y = player.position.y - 6;
-            camera.lookAt(player.position);
-        }
+        this.playerMovement(deltaTime);
 
         scene.children.forEach((object) =>
         {
@@ -326,7 +332,12 @@ export class PlayState extends State
             if (object instanceof Triggerable)
             {
                 if (player.box.intersectsBox(object.trigger))
-                    object.onTrigger(player);
+                {
+                    if (object.triggeringObjects.includes(player))
+                        object.onTrigger(player);
+                    else
+                        object.onStartTrigger(player);
+                }
                 else if (object.triggeringObjects.includes(player))
                     object.onStopTrigger(player);
 
@@ -355,13 +366,13 @@ export class PlayState extends State
 
         //physicsStep(deltaTime);
 
-        if (this.freeCam)
+        if (freeControls.enabled)
             freeControls.update();
 
-            /*
+        /*
         if (mixer)
             mixer.update(deltaTime);
-            */
+        */
         
         composer.render();
         htmlRenderer.render(scene, camera);

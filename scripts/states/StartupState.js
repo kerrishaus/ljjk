@@ -106,6 +106,10 @@ export class StartupState extends State
             freeControls.update();
             freeControls.enabled = false;
 
+            window.renderingDisabled     = false;
+            window.allControlsDisabled   = false;
+            window.entityUpdatesDisabled = false;
+
             /*
             dracoLoader = new DRACOLoader();
             dracoLoader.setDecoderPath('https://kerrishaus.com/assets/threejs/examples/js/libs/draco/gltf/');

@@ -32,7 +32,7 @@ export class Triggerable extends DynamicMesh
         this.trigger.copy(this.triggerObject.geometry.boundingBox).applyMatrix4(this.triggerObject.matrixWorld);
     }
     
-    onTrigger(object)
+    onStartTrigger(object)
     {
         if (this.triggeringObjects.includes(object))
             return false;
@@ -42,6 +42,11 @@ export class Triggerable extends DynamicMesh
         
         this.triggerObject.material.color.setHex(0x00ff00);
 
+        return true;
+    }
+
+    onTrigger(object)
+    {
         return true;
     }
     

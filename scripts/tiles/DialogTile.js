@@ -31,10 +31,9 @@ export class DialogTile extends Triggerable
         $("#dialogContainer").remove();
     }
     
-    onTrigger(object)
+    onStartTrigger(object)
     {
-        if (!super.onTrigger(object))
-            return false;
+        super.onStartTrigger(object);
 
         if (object instanceof Player)
             this.startDialog();
