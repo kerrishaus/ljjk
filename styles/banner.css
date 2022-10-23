@@ -1,0 +1,23 @@
+.banner
+{
+    color: white;
+    
+    display: flex;
+    justify-content: space-around;
+    gap: 1px;
+    
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    
+    width: 100vw;
+}
+
+.banner > div
+{
+    padding: 10px 20px;
+    background-color: #222;
+    margin-top: 20px;
+    border-radius: 100%;
+    border: 1px solid white;
+}

@@ -1,0 +1,34 @@
+*
+{
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+input
+{
+    user-select: initial !important;
+    -webkit-user-select: initial !important;
+}
+
+html, body
+{
+    margin: 0;
+    background-color: black;
+
+    overflow: hidden;
+}
+
+.gameInterfaceContainer
+{
+    pointer-events: none;
+
+    margin: 0;
+    background-color: black;
+    overflow-x: hidden;
+    
+    height: 100%;
+    width: 100%;
+    
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
