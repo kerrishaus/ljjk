@@ -1,11 +1,12 @@
 export class DialogBox
 {
-    constructor(message, printSpeed = 100, printDelay = 400)
+    constructor(message, printSpeed = 50, printDelay = 400)
     {
         this.printSpeed = printSpeed;
         this.printInterval = null;
         this.printDelay = printDelay;
         this.printIteration = 0;
+        this.open = false;
 
         this.message = message;
 
@@ -17,21 +18,26 @@ export class DialogBox
         $(".dialog-message").empty();
 
         this.dialog.removeClass("hidden");
+        this.open = true;
 
         setTimeout(() =>
         {
+            if (!this.open)
+                return;
+
             this.printIteration = 0;
 
             this.printInterval = setInterval(() =>
             {
-                console.log("f");
-                
                 $(".dialog-message").append(this.message[this.printIteration++]);
 
                 if (this.printIteration >= this.message.length)
                 {
                     clearInterval(this.printInterval);
+                    this.printInterval = null;
                     console.log("done printing");
+
+                    // TODO: add a close button to the dialog at this point
                 }
             }, this.printSpeed);
         }, this.printDelay);
@@ -44,6 +50,9 @@ export class DialogBox
         this.dialog.addClass("hidden");
 
         clearInterval(this.printInterval);
+        this.printInterval = null;
+
+        this.open = false;
 
         console.log("hid dialog");
     }

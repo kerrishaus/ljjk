@@ -167,6 +167,12 @@ export class PlayState extends State
 
         scene.add(dialog);
 
+        const map = new THREE.TextureLoader().load( 'sprite.png' );
+        const material = new THREE.SpriteMaterial( { map: map } );
+
+        const sprite = new THREE.Sprite( material );
+        scene.add( sprite );
+
         console.log("PlayState is ready.");
 
         $(renderer.domElement).show();
