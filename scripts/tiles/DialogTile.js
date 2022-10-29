@@ -7,13 +7,15 @@ import { Player } from "../Player.js";
 
 export class DialogTile extends Triggerable
 {
-    constructor(message)
+    constructor(message, printSpeed)
     {
         super(6, 2, 8, 4, 0xad723e);
 
         this.name = "dialog";
 
-        this.dialog = new DialogBox(message);
+        this.dialog = new DialogBox(message, printSpeed);
+        this.printSpeed = printSpeed;
+        this.printInterval = null;
     }
     
     update(deltaTime)

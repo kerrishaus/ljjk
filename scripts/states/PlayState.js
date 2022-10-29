@@ -16,38 +16,13 @@ export class PlayState extends State
         PageUtility.addStyle("banner");
         PageUtility.addStyle("interface");
         PageUtility.addStyle("buyMenu");
-        PageUtility.addStyle("dialogBox");
+        PageUtility.addStyle("dialog/dialogBox");
 
-        $(document.body).append(`<div id='interface' class="gameInterfaceContainer">
-        <div class='banner'>
-            <div>
-                $<span id='money'>0</span>
+        $(document.body).append(`
+        <div class="interface-container">
+            <div class='dialog-container'>
             </div>
-            <div>
-                rep <span id='reputation'>0</span>
-            </div>
-            <div>
-                customers <span id="customerCount">0</span>
-            </div>
-
-            <div>
-                <a id="upgradesButton">Upgrades</a>
-            </div>
-
-            <div>
-                <a id="settingsButton">Settings</a>
-            </div>
-        </div>
-        
-        <div class='buttons'>
-            <div class='upgrades'>
-                
-            </div>
-        </div>
-
-        <div class='dialogContainer'>
-        </div>
-    </div>`);
+        </div>`);
 
         //$(document.body).append(`<div id="buyMenu" class="display-flex flex-wrap flex-gap" data-visiblity="hidden"></div>`);
 

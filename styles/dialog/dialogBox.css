@@ -1,4 +1,4 @@
-.dialogBox
+.dialog-box
 {
     --animation-time: 0.5s;
 
@@ -10,9 +10,14 @@
     background-color: #222222aa;
     color: rgb(182, 182, 182);
 
-    padding: 100px;
+    border: 10px solid transparent;
+    border-image: url(../../textures/dialog/chatborder.png) 30 round;
 
-    width: 100vw;
+    padding: 50px;
+
+    width: 80vw;
+    margin-left: 10vw;
+    margin-bottom: 3vw;
 
     opacity: 1;
 
@@ -23,18 +28,18 @@
                 bottom var(--animation-time);
 }
 
-.dialogBox.bottom
+.dialog-box.bottom
 {
     bottom: 0px;
     left: 0px;
 }
 
-.dialogBox.bottom.hidden
+.dialog-box.bottom.hidden
 {
     bottom: -100vh;
 }
 
-.dialogBox.hidden
+.dialog-box.hidden
 {
     opacity: 0.5;
     touch-action: none;
