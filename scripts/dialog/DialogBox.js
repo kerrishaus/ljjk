@@ -24,10 +24,15 @@ export class DialogBox
 
             this.printInterval = setInterval(() =>
             {
+                console.log("f");
+                
                 $(".dialog-message").append(this.message[this.printIteration++]);
 
                 if (this.printIteration >= this.message.length)
+                {
                     clearInterval(this.printInterval);
+                    console.log("done printing");
+                }
             }, this.printSpeed);
         }, this.printDelay);
 
