@@ -21,6 +21,11 @@ export class PlayState extends State
         $(document.body).append(`
         <div class="interface-container">
             <div class='dialog-container'>
+                <div class='dialog-box hidden bottom'>
+                    <span class='dialog-message'>
+                        If you ever see this text, someone got fired!
+                    </span>
+                </div>
             </div>
         </div>`);
 

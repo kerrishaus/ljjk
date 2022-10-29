@@ -1,6 +1,6 @@
 export class DialogBox
 {
-    constructor(message, printSpeed = 100, printDelay = 300)
+    constructor(message, printSpeed = 100, printDelay = 400)
     {
         this.printSpeed = printSpeed;
         this.printInterval = null;
@@ -9,12 +9,13 @@ export class DialogBox
 
         this.message = message;
 
-        this.dialog = $(`<div class='dialog-box hidden bottom'><span class='dialog-message'></span></div>`);
-        $(".dialog-container").append(this.dialog)
+        this.dialog = $(".dialog-box");
     }
 
     presentDialog()
     {
+        $(".dialog-message").empty();
+
         this.dialog.removeClass("hidden");
 
         setTimeout(() =>
