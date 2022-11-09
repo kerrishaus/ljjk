@@ -1,0 +1,11 @@
+Model Information:
+* title:	pinetree
+* source:	https://sketchfab.com/3d-models/pinetree-e7c6a19178074c45b2f0107e674d252d
+* author:	n-malmberg (https://sketchfab.com/n-malmberg)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "pinetree" (https://sketchfab.com/3d-models/pinetree-e7c6a19178074c45b2f0107e674d252d) by n-malmberg (https://sketchfab.com/n-malmberg) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

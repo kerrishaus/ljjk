@@ -2,6 +2,8 @@ import { State } from "./State.js";
 
 import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
+import { GLTFLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/GLTFLoader.js';
+
 import * as MathUtility from "../MathUtility.js";
 import * as PageUtility from "../PageUtility.js";
 
@@ -113,6 +115,10 @@ export class PlayState extends State
 
                 console.log("FreeCamera has been toggled.");
             }
+            else if (event.code == "KeyP")
+            {
+                pixelPass.enabled = !pixelPass.enabled;
+            }
             else
             {
                 switch (event.code)
@@ -159,6 +165,64 @@ export class PlayState extends State
             return 'You will lose unsaved progress, are you sure?';
         };
         */
+
+        // below this line is proof of concept for scary game
+
+        const floorGeometry = new THREE.BoxGeometry(50, 50, 1);
+
+        const floorTexture = new THREE.TextureLoader().load('textures/terrain/grassdirt-big.png');
+        floorTexture.repeat = new THREE.Vector2(3, 3);
+        floorTexture.wrapS = THREE.RepeatWrapping;
+        floorTexture.wrapT = THREE.RepeatWrapping;
+        const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
+
+        const floor         = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.position.z = -1;
+
+        scene.add(floor);
+
+        scene.fog = new THREE.Fog( 0x000000, 0.004, 20 ); 
+
+        const loader = new GLTFLoader();
+
+        for (let i = 0; i < 40; i++)
+        {
+            loader.load('models/geometry/foliage/tree/scene.gltf', function (gltf)
+            {
+                gltf.scene.scale.x = 0.1 + Math.random() / 4;
+                gltf.scene.scale.y = 0.1 + Math.random() / 4;
+                gltf.scene.scale.z = 0.1 + Math.random() / 4;
+
+                gltf.scene.rotation.x = 1.5708;
+                //gltf.scene.rotation.y += Math.random();
+                //gltf.scene.rotation.z += Math.random();
+
+                gltf.scene.position.x = MathUtility.getRandomInt(-15, 15);
+                gltf.scene.position.y = MathUtility.getRandomInt(-15, 15);
+                scene.add(gltf.scene);
+
+                console.log("created tree " + i);
+            }, undefined, function (error) 
+            {
+                console.error(error);
+            });
+        }
+
+        // create an AudioListener and add it to the camera
+        const listener = new THREE.AudioListener();
+        camera.add( listener );
+
+        // create a global audio source
+        const sound = new THREE.Audio( listener );
+
+        // load a sound and set it as the Audio object's buffer
+        const audioLoader = new THREE.AudioLoader();
+        audioLoader.load( 'audio/music/forest_ambient.mp3', function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( true );
+            sound.setVolume( 0.5 );
+            sound.play();
+        });
 
         // TODO: move this out of here later, this is just proof of concept
 

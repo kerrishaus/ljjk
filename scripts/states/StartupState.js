@@ -89,7 +89,7 @@ export class StartupState extends State
             scene.add(light2);
             
             window.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
-            camera.position.z = 10;
+            camera.position.z = 2;
             camera.position.y = -12;
             camera.lookAt(new THREE.Vector3(0, 0, 0));
             
@@ -140,7 +140,7 @@ export class StartupState extends State
 
             //composer.addPass(new UnrealBloomPass(new THREE.Vector2(2048, 2048), 1, 0.4, 0.8));
             
-            const pixelPass = new ShaderPass(PixelShader);
+            window.pixelPass = new ShaderPass(PixelShader);
             pixelPass.uniforms['resolution'].value = new THREE.Vector2(window.innerWidth, window.innerHeight);
             pixelPass.uniforms['resolution'].value.multiplyScalar(window.devicePixelRatio);
             pixelPass.uniforms[ 'pixelSize' ].value = 6;
