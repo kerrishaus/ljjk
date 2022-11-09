@@ -89,8 +89,7 @@ export class StartupState extends State
             scene.add(light2);
             
             window.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
-            camera.position.z = 2;
-            camera.position.y = -12;
+            camera.position.z = 10;
             camera.lookAt(new THREE.Vector3(0, 0, 0));
             
             window.addEventListener('resize', (event) =>

@@ -137,8 +137,7 @@ export class PlayState extends State
                     case "ArrowDown":
                     case "KeyD":
                     case "ArrowRight":
-                        break; // remove this when keyboard movement is allowed
-                        this.move = MoveType.Keyboard;
+                        this.move = this.MoveType.Keyboard;
                         this.moveTarget.quaternion.copy(player.quaternion);
                         break;
                 };
@@ -148,8 +147,6 @@ export class PlayState extends State
         window.addEventListener("keyup", (event) =>
         {
             this.keys[event.code] = false;
-
-            return; // remove this when keyboard movement is allowed
 
             if (!(this.keys["KeyW"] || this.keys["ArrowUp"] ||
                   this.keys["KeyA"] || this.keys["ArrowLeft"] ||
@@ -181,6 +178,7 @@ export class PlayState extends State
 
         scene.add(floor);
 
+        /*
         scene.fog = new THREE.Fog( 0x000000, 0.004, 20 ); 
 
         const loader = new GLTFLoader();
@@ -207,6 +205,7 @@ export class PlayState extends State
                 console.error(error);
             });
         }
+        */
 
         // create an AudioListener and add it to the camera
         const listener = new THREE.AudioListener();
@@ -366,7 +365,7 @@ export class PlayState extends State
 
         // face the camera at the player
         camera.position.x = player.position.x;
-        camera.position.y = player.position.y - 6;
+        camera.position.y = player.position.y;
         camera.lookAt(player.position);
     }
 

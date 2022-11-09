@@ -1,4 +1,4 @@
-import { Vector3, Quaternion, BoxGeometry, MeshStandardMaterial, PerspectiveCamera } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { PlaneGeometry, Vector3, Quaternion, BoxGeometry, MeshStandardMaterial, PerspectiveCamera } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
 import { ItemCarrier } from "./ItemCarrier.js";
 
@@ -8,9 +8,9 @@ export class Player extends ItemCarrier
 {
     constructor()
     {
-        const geometry = new BoxGeometry(1, 1, 2);
-        const material = new MeshStandardMaterial({ color: 0x0000ff });
-        
+        const geometry = new PlaneGeometry(2, 2);
+        const material = new MeshStandardMaterial({ color: 0xFFFFFF });
+
         super(geometry, material);
 
         //this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);

@@ -37,13 +37,13 @@ export class LoadSaveState extends State
         window.player = new Player();
         scene.add(player);
 
-        player.position.x = saveData.player.position.x
-        player.position.y = saveData.player.position.y
-        player.position.z = saveData.player.position.z
+        player.position.x = saveData.player.position.x;
+        player.position.y = saveData.player.position.y;
+        player.position.z = saveData.player.position.z;
 
-        player.rotation.x = saveData.player.rotation.x
-        player.rotation.y = saveData.player.rotation.y
-        player.rotation.z = saveData.player.rotation.z
+        player.rotation.x = saveData.player.rotation.x;
+        player.rotation.y = saveData.player.rotation.y;
+        player.rotation.z = saveData.player.rotation.z;
 
         for (const item of saveData.player.carriedItems)
         {
