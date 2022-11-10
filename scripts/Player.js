@@ -24,11 +24,16 @@ export class Player extends ItemCarrier
 
         super(geometry, material);
 
+        this.spriteSheet = spriteSheet;
+
         //this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
 		        
         this.maxSpeed = 0.3;
         
         this.move = null;
+
+        this.spriteUpdateTime = 0.5; // in seconds
+        this.timeSinceLastSpriteUpdate = 0;
     }
     
     update(deltaTime)
@@ -37,6 +42,14 @@ export class Player extends ItemCarrier
 
         if (this.move)
         {
+            this.timeSinceLastSpriteUpdate += deltaTime;
+
+            if (this.timeSinceLastSpriteUpdate > this.spriteUpdateTime)
+            {
+                this.spriteSheet.offset.x += 0.0586;
+
+                this.timeSinceLastSpriteUpdate = 0;
+            }
         }
     }
 };
