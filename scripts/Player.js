@@ -1,4 +1,4 @@
-import { PlaneGeometry, Vector3, Quaternion, BoxGeometry, MeshStandardMaterial, PerspectiveCamera } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { RepeatWrapping, TextureLoader, PlaneGeometry, Vector3, Quaternion, BoxGeometry, MeshStandardMaterial, PerspectiveCamera } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
 import { ItemCarrier } from "./ItemCarrier.js";
 
@@ -9,17 +9,34 @@ export class Player extends ItemCarrier
     constructor()
     {
         const geometry = new PlaneGeometry(2, 2);
-        const material = new MeshStandardMaterial({ color: 0xFFFFFF });
+
+        const spriteSheet = new TextureLoader().load('textures/sprites/player.png');
+
+        spriteSheet.wrapS = RepeatWrapping;
+        spriteSheet.wrapT = RepeatWrapping;
+        spriteSheet.repeat.set(0.058, 1);
+
+        spriteSheet.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+        spriteSheet.rotation = 1.5708;
+
+        const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
         super(geometry, material);
 
         //this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
 		        
         this.maxSpeed = 0.3;
+        
+        this.move = null;
     }
     
     update(deltaTime)
     {
         super.update(deltaTime);
+
+        if (this.move)
+        {
+        }
     }
 };

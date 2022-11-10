@@ -371,6 +371,9 @@ export class PlayState extends State
 
     entityTick(deltaTime)
     {
+        // TODO: remove this
+        player.move = this.move;
+
         scene.children.forEach((object) =>
         {
             if ('update' in object)
