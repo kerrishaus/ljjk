@@ -1,6 +1,6 @@
 export class DialogBox
 {
-    constructor(message, printSpeed = 50, printDelay = 400)
+    constructor(message, printSpeed, printDelay = 400)
     {
         this.printSpeed = printSpeed;
         this.printInterval = null;

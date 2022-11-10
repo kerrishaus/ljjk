@@ -1,33 +1,31 @@
-import { Vector3, Quaternion, RepeatWrapping, TextureLoader, MeshStandardMaterial, PlaneGeometry } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { PlaneGeometry, RepeatWrapping, Vector3, Quaternion, TextureLoader, MeshStandardMaterial } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
 import { DialogBox } from "../dialog/DialogBox.js";
 
 import { Triggerable } from "../geometry/Triggerable.js";
 import { Player } from "../Player.js";
 
-export class DialogTile extends Triggerable
+export class Chest extends Triggerable
 {
-    constructor(message, printSpeed, position, size)
+    constructor(message, printSpeed, triggerWidth, triggerLength)
     {
-        const geometry = new PlaneGeometry(size.x, size.y);
+        const geometry = new PlaneGeometry(1, 1);
 
-        const spriteSheet = new TextureLoader().load('textures/sprites/player.png');
+        const spriteSheet = new TextureLoader().load('textures/sprites/chest.png');
 
         spriteSheet.wrapS = RepeatWrapping;
         spriteSheet.wrapT = RepeatWrapping;
-        spriteSheet.repeat.set(0.058, 1);
+        spriteSheet.repeat.set(0.5, 1);
 
         spriteSheet.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
         spriteSheet.rotation = 1.5708;
 
-        //const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
+        const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
-        const material = new MeshStandardMaterial({color: 0xFFFFFF});
+        super(geometry, material, triggerWidth, triggerLength);
 
-        super(geometry, material, size.x, size.y);
-
-        this.position.copy(position);
+        this.spriteSheet = spriteSheet;
 
         this.name = "dialog";
 
@@ -44,11 +42,15 @@ export class DialogTile extends Triggerable
     startDialog()
     {
         this.dialog.presentDialog();
+
+        this.spriteSheet.offset.x = 0.5;
     }
 
     stopDialog()
     {
         this.dialog.hideDialog();
+
+        this.spriteSheet.offset.x = 0;
     }
     
     onStartTrigger(object)

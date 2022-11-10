@@ -9,6 +9,7 @@ import * as PageUtility from "../PageUtility.js";
 
 import { Triggerable } from "../geometry/Triggerable.js";
 import { DialogTile } from "../tiles/DialogTile.js";
+import { Chest } from "../tiles/Chest.js";
 
 export class PlayState extends State
 {
@@ -22,6 +23,11 @@ export class PlayState extends State
 
         $(document.body).append(`
         <div class="interface-container">
+            <div class='instructions'>
+                <p>Use the mouse, WASD or arrow keys to control movement.</p>
+                <p>Press P to disable pixelation.</p>
+                <p>Press O to toggle free camera.</p>
+            </div>
             <div class='dialog-container'>
                 <div class='dialog-box hidden bottom'>
                     <span class='dialog-message'>
@@ -225,10 +231,15 @@ export class PlayState extends State
 
         // TODO: move this out of here later, this is just proof of concept
 
-        const dialog = new DialogTile("hello i am dialog2");
+        const dialog = new DialogTile("hello i am dialog2", 50, new THREE.Vector2(10, 0), new THREE.Vector2(10, 10));
         dialog.position.x = 10;
 
         scene.add(dialog);
+
+        const chest = new Chest("congration u found trasure");
+        chest.position.x = -10;
+
+        scene.add(chest);
 
         const map = new THREE.TextureLoader().load( 'sprite.png' );
         const material = new THREE.SpriteMaterial( { map: map } );

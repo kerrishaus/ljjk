@@ -49,13 +49,6 @@ export class Shop extends Group
         this.containerTiles = new Array();
         this.generatorTiles = new Array();
         
-        this.register = new Register();
-        this.register.position.x = -8;
-        this.register.position.y = -7;
-        for (let i = 0; i < shopData.money; i++)
-            this.register.addMoney();
-        scene.add(this.register);
-        
         let tomatoStandBuyTile = new BuyableTile(1, 1, 7, 7, 100, "Buy \"Tomato Stand\"");
         tomatoStandBuyTile.onFullyPaid = () =>
         {

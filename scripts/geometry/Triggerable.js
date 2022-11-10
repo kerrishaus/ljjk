@@ -4,11 +4,8 @@ import { DynamicMesh } from "./DynamicMesh.js";
 
 export class Triggerable extends DynamicMesh
 {
-    constructor(width, length, triggerWidth, triggerLength, color)
+    constructor(geometry, material, triggerWidth, triggerLength)
     {
-        const geometry = new BoxGeometry(width, length, 1);
-        const material = new MeshStandardMaterial({ color: color });
-        
         super(geometry, material);
         
         const triggerGeometry = new BoxGeometry(triggerWidth, triggerLength, 0.1);
