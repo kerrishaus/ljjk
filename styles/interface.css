@@ -11,3 +11,14 @@
 
     color: white;
 }
+
+.debug
+{
+    color: yellow;
+    font-family: monospace;
+}
+
+.debug p
+{
+    margin: 0;
+}

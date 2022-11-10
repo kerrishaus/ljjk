@@ -34,7 +34,7 @@ export class LoadSaveState extends State
         for (const tile of saveData.shop.tiles)
             this.loadTile(tile);
 
-        window.player = new Player();
+        window.player = new Player(camera);
         scene.add(player);
 
         player.position.x = saveData.player.position.x;

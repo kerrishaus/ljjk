@@ -10,8 +10,6 @@ import { UnrealBloomPass } from 'https://kerrishaus.com/assets/threejs/examples/
 import { ShaderPass } from "https://kerrishaus.com/assets/threejs/examples/jsm/postprocessing/ShaderPass.js";
 import { PixelShader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/shaders/PixelShader.js';
 
-import { TransformControls } from 'https://kerrishaus.com/assets/threejs/examples/jsm/controls/TransformControls.js';
-import { OrbitControls } from 'https://kerrishaus.com/assets/threejs/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/DRACOLoader.js';
 import { RoomEnvironment } from 'https://kerrishaus.com/assets/threejs/examples/jsm/environments/RoomEnvironment.js';
@@ -71,26 +69,8 @@ export class StartupState extends State
 
             window.scene = new PhysicsScene(); // TODO: FIXME: I don't really feel great about this, but it works, so it stays.
             
-            const light = new THREE.DirectionalLight(0xffffff, 0.5);
-            light.position.set(0, 5, 5);
-            light.target.position.set(0, 0, 0);
-            light.castShadow = true
-            light.shadow.mapSize.width = 4096;
-            light.shadow.mapSize.height = 4096;
-            light.shadow.camera.near = 0.5;
-            light.shadow.camera.far = 40;
-            light.shadow.camera.left = -40;
-            light.shadow.camera.right = 40;
-            light.shadow.camera.top = 40;
-            light.shadow.camera.bottom = -40;
-            scene.add(light);
-
             const light2 = new THREE.AmbientLight(0xaaaaaa);
             scene.add(light2);
-            
-            window.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
-            camera.position.z = 10;
-            camera.lookAt(new THREE.Vector3(0, 0, 0));
             
             window.addEventListener('resize', (event) =>
             {
@@ -100,39 +80,14 @@ export class StartupState extends State
                 console.log("Window resized.");
             });
 
-            window.freeControls = new OrbitControls(camera, renderer.domElement);
-            freeControls.target.set(0, 0, 0);
-            freeControls.update();
-            freeControls.enabled = false;
-
             window.renderUpdatesEnabled  = true;
             window.entityUpdatesEnabled  = true;
             window.physicsUpdatesEnabled = true;
             window.playerControlsEnabled = true;
 
-            /*
-            dracoLoader = new DRACOLoader();
-            dracoLoader.setDecoderPath('https://kerrishaus.com/assets/threejs/examples/js/libs/draco/gltf/');
-
-            loader = new GLTFLoader();
-            loader.setDRACOLoader(dracoLoader);
-            loader.load('models/LittlestTokyo_placeholder.glb', function(gltf)
-            {
-                const model = gltf.scene;
-                //model.position.set(5, 26, 11.45); // for right out front
-                model.position.set(5, 30, 11.45);
-                model.rotation.x = 1.5708;
-                //model.rotation.y = 1.5708;
-                model.scale.set(0.06, 0.06, 0.06);
-                scene.add(model);
-
-                mixer = new THREE.AnimationMixer(model);
-                mixer.clipAction(gltf.animations[0]).play();
-            }, undefined, function(e)
-            {
-                console.error(e);
-            });
-            */
+            window.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
+            camera.position.z = 10;
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
 
             window.composer = new EffectComposer(renderer);
             composer.addPass(new RenderPass(scene, camera));
