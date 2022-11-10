@@ -231,7 +231,7 @@ export class PlayState extends State
 
         // TODO: move this out of here later, this is just proof of concept
 
-        const dialog = new DialogTile("hello i am dialog2", 50, new THREE.Vector2(10, 0), new THREE.Vector2(10, 10));
+        const dialog = new DialogTile("hello my name is tyler", 50, new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
         dialog.position.x = 10;
 
         scene.add(dialog);

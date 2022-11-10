@@ -19,11 +19,9 @@ export class DialogTile extends Triggerable
 
         spriteSheet.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-        spriteSheet.rotation = 1.5708;
+        //spriteSheet.rotation = 1.5708;
 
-        //const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
-
-        const material = new MeshStandardMaterial({color: 0xFFFFFF});
+        const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
         super(geometry, material, size.x, size.y);
 
