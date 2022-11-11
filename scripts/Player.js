@@ -73,6 +73,7 @@ export class Player extends ItemCarrier
     {
         super.update(deltaTime);
 
+        /*
         if (this.move)
         {
             this.timeSinceLastSpriteUpdate += deltaTime;
@@ -84,79 +85,88 @@ export class Player extends ItemCarrier
                 this.timeSinceLastSpriteUpdate = 0;
             }
         }
+        */
 
         $("#playerDelta").text(deltaTime);
-        $("#playerMove").text(this.move);
 
+        /*
         if (this.freeControls.enabled)
             return;
+        */
 
-        if (!(this.move == this.MoveType.Keyboard) ||
-              this.move == this.MoveType.Mouse ||
-              this.move == this.MoveType.Touch)
-            return;
+        if (this.move == this.MoveType.Keyboard ||
+            this.move == this.MoveType.Mouse ||
+            this.move == this.MoveType.Touch)
+        {
+            $("#playerMove").text("moving");
+            console.log("player is moving");
 
             /*
-        if (!playerControlsEnabled)
-            return;
+            if (!playerControlsEnabled)
+                return;
             */
 
-        let position = new Vector2(), target = new Vector2();
-        let velocity = 0;
+            let position = new Vector2(), target = new Vector2();
+            let velocity = 0;
 
-        if (this.move == this.MoveType.Touch)
-        {
-            position = this.pointerMoveOrigin;
-            target = this.mouse;
+            if (this.move == this.MoveType.Touch)
+            {
+                position = this.pointerMoveOrigin;
+                target = this.mouse;
 
-            velocity = this.pointerMoveOrigin.distanceTo(new Vector3(this.mouse.x, this.mouse.y)) / 2;
+                velocity = this.pointerMoveOrigin.distanceTo(new Vector3(this.mouse.x, this.mouse.y)) / 2;
+            }
+            else
+            {
+                if (this.move == this.MoveType.Keyboard)
+                {
+                    const moveAmount = this.maxSpeed;
+
+                    if (this.keys["KeyW"] || this.keys["ArrowUp"])
+                        this.moveTarget.translateY(moveAmount);
+                    if (this.keys["KeyA"] || this.keys["ArrowLeft"])
+                        this.moveTarget.translateX(-moveAmount);
+                    if (this.keys["KeyS"] || this.keys["ArrowDown"])
+                        this.moveTarget.translateY(-moveAmount);
+                    if (this.keys["KeyD"] || this.keys["ArrowRight"])
+                        this.moveTarget.translateX(moveAmount);
+
+                    this.moveTarget.quaternion.copy(this.quaternion);
+                }
+                else if (this.move == this.MoveType.Mouse)
+                {
+                    this.raycaster.setFromCamera(this.mouse, this.camera);
+                    this.raycaster.ray.intersectPlane(this.plane, this.intersects);
+                    this.moveTarget.position.copy(this.intersects);
+                }
+
+                position.x = this.position.x;
+                position.y = this.position.y
+
+                target.x = this.moveTarget.position.x;
+                target.y = this.moveTarget.position.y;
+
+                velocity = this.position.distanceTo(this.moveTarget.position) / 20;
+            }
+
+            // set the player's direction
+            //this.rotation.z = Math.atan2(y2 - y1, x2 - x1) - 1.5708;
+            this.rotation.z = MathUtility.angleToPoint(position, target);
+
+            // clamp the player's velocity
+            velocity = MathUtility.clamp(velocity, 0, this.maxSpeed);
+
+            // move the player their direction
+            this.translateY(velocity);
+
+            // position the camera relative to the player
+            this.camera.position.x = this.position.x;
+            this.camera.position.y = this.position.y;
+            this.camera.lookAt(this.position);
         }
         else
         {
-            if (this.move == this.MoveType.Keyboard)
-            {
-                const moveAmount = this.maxSpeed;
-
-                if (this.keys["KeyW"] || this.keys["ArrowUp"])
-                    this.moveTarget.translateY(moveAmount);
-                if (this.keys["KeyA"] || this.keys["ArrowLeft"])
-                    this.moveTarget.translateX(-moveAmount);
-                if (this.keys["KeyS"] || this.keys["ArrowDown"])
-                    this.moveTarget.translateY(-moveAmount);
-                if (this.keys["KeyD"] || this.keys["ArrowRight"])
-                    this.moveTarget.translateX(moveAmount);
-
-                this.moveTarget.quaternion.copy(this.quaternion);
-            }
-            else if (this.move == this.MoveType.Mouse)
-            {
-                this.raycaster.setFromCamera(this.mouse, this.camera);
-                this.raycaster.ray.intersectPlane(this.plane, this.intersects);
-                this.moveTarget.position.copy(this.intersects);
-            }
-
-            position.x = this.position.x;
-            position.y = this.position.y
-
-            target.x = this.moveTarget.position.x;
-            target.y = this.moveTarget.position.y;
-
-            velocity = this.position.distanceTo(this.moveTarget.position) / 20;
+            $("#playerMove").text("not moving");
         }
-
-        // set the player's direction
-        //this.rotation.z = Math.atan2(y2 - y1, x2 - x1) - 1.5708;
-        this.rotation.z = MathUtility.angleToPoint(position, target);
-
-        // clamp the player's velocity
-        velocity = MathUtility.clamp(velocity, 0, this.maxSpeed);
-
-        // move the player their direction
-        this.translateY(velocity);
-
-        // position the camera relative to the player
-        this.camera.position.x = this.position.x;
-        this.camera.position.y = this.position.y;
-        this.camera.lookAt(this.position);
     }
 };
