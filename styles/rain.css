@@ -1,0 +1,60 @@
+.rain
+{
+    position: absolute;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    opacity: 0.2;
+
+    background-color: transparent;
+    background: url(https://thumbs.gfycat.com/RealDismalGreyhounddog-size_restricted.gif);
+
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+
+    animation: thunder 5s infinite;
+}
+
+@keyframes thunder
+{
+    0%
+    {
+        background-color: transparent;
+        opacity: 0.2;
+    }
+
+    2%
+    {
+        background-color: white;
+        opacity: 1;
+    }
+
+    3%
+    {
+        background-color: transparent;
+        opacity: 0.2;
+    }
+
+    4%
+    {
+        background-color: white;
+        opacity: 1;
+    }
+
+    5%
+    {
+        background-color: transparent;
+        opacity: 0.2;
+    }
+
+    100%
+    {
+        background-color: transparent;
+        opacity: 0.2;
+    }
+}

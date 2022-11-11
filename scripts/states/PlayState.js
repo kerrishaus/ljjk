@@ -19,6 +19,7 @@ export class PlayState extends State
         PageUtility.addStyle("banner");
         PageUtility.addStyle("interface");
         PageUtility.addStyle("buyMenu");
+        PageUtility.addStyle("rain");
         PageUtility.addStyle("dialog/dialogBox");
 
         $(document.body).append(`
@@ -39,6 +40,7 @@ export class PlayState extends State
                     </span>
                 </div>
             </div>
+            <div class='rain'></div>
         </div>`);
 
         //$(document.body).append(`<div id="buyMenu" class="display-flex flex-wrap flex-gap" data-visiblity="hidden"></div>`);
@@ -114,18 +116,28 @@ export class PlayState extends State
 
         // create an AudioListener and add it to the camera
         const listener = new THREE.AudioListener();
-        camera.add(listener);
+        player.camera.add(listener);
 
         // create a global audio source
-        const sound = new THREE.Audio(listener);
+        const ambientMusic = new THREE.Audio(listener);
+        const ambientRain = new THREE.Audio(listener);
 
         // load a sound and set it as the Audio object's buffer
         const audioLoader = new THREE.AudioLoader();
-        audioLoader.load( 'audio/music/forest_ambient.mp3', function( buffer ) {
-            sound.setBuffer( buffer );
-            sound.setLoop( true );
-            sound.setVolume( 0.5 );
-            sound.play();
+        audioLoader.load( 'audio/music/forest_ambient.mp3', function(buffer)
+        {
+            ambientMusic.setBuffer( buffer );
+            ambientMusic.setLoop( true );
+            ambientMusic.setVolume( 0.5 );
+            ambientMusic.play();
+        });
+
+        audioLoader.load( 'audio/music/rain.mp3', function(buffer)
+        {
+            ambientRain.setBuffer( buffer );
+            ambientRain.setLoop( true );
+            ambientRain.setVolume( 0.2 );
+            ambientRain.play();
         });
 
         // TODO: move this out of here later, this is just proof of concept
