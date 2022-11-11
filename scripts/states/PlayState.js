@@ -43,8 +43,6 @@ export class PlayState extends State
 
         //$(document.body).append(`<div id="buyMenu" class="display-flex flex-wrap flex-gap" data-visiblity="hidden"></div>`);
 
-        this.keys = new Array();
-        
         this.clock = new THREE.Clock();
 
         window.oncontextmenu = (event) =>
@@ -89,8 +87,6 @@ export class PlayState extends State
 
         window.addEventListener("keydown", (event) =>
         {
-            this.keys[event.code] = true;
-
             if (event.code == "KeyO")
             {
                 player.freeControls.enabled = !player.freeControls.enabled;
@@ -105,39 +101,6 @@ export class PlayState extends State
             {
                 pixelPass.enabled = !pixelPass.enabled;
             }
-            else
-            {
-                switch (event.code)
-                {
-                    case "KeyW":
-                    case "ArrowUp":
-                    case "KeyA":
-                    case "ArrowLeft":
-                    case "KeyS":
-                    case "ArrowDown":
-                    case "KeyD":
-                    case "ArrowRight":
-                        player.move = player.MoveType.Keyboard;
-                        console.log("new player move: " + player.move);
-                        player.moveTarget.quaternion.copy(player.quaternion);
-                        console.log("player keyboard move target updated");
-                        break;
-                };
-            }
-        });
-        
-        window.addEventListener("keyup", (event) =>
-        {
-            this.keys[event.code] = false;
-
-            if (!(this.keys["KeyW"] || this.keys["ArrowUp"] ||
-                  this.keys["KeyA"] || this.keys["ArrowLeft"] ||
-                  this.keys["KeyS"] || this.keys["ArrowDown"] ||
-                  this.keys["KeyD"] || this.keys["ArrowRight"]))
-                {
-                    player.move = null;
-                    console.log("player keyboard move cancelled");
-                }
         });
 
         /*

@@ -64,6 +64,39 @@ export class Player extends ItemCarrier
         this.raycaster = new Raycaster();
         this.intersects = new Vector3();
 
+        this.keys = new Array();
+
+        window.addEventListener("keydown", (event) =>
+        {
+            this.keys[event.code] = true;
+
+            switch (event.code)
+            {
+                case "KeyW":
+                case "ArrowUp":
+                case "KeyA":
+                case "ArrowLeft":
+                case "KeyS":
+                case "ArrowDown":
+                case "KeyD":
+                case "ArrowRight":
+                    this.move = this.MoveType.Keyboard;
+                    this.moveTarget.quaternion.copy(this.quaternion);
+                    break;
+            };
+        });
+        
+        window.addEventListener("keyup", (event) =>
+        {
+            this.keys[event.code] = false;
+
+            if (!(this.keys["KeyW"] || this.keys["ArrowUp"] ||
+                  this.keys["KeyA"] || this.keys["ArrowLeft"] ||
+                  this.keys["KeyS"] || this.keys["ArrowDown"] ||
+                  this.keys["KeyD"] || this.keys["ArrowRight"]))
+                    player.move = null;
+        });
+
         this.maxSpeed = 0.3;
         this.spriteUpdateTime = 0.25; // in seconds
         this.timeSinceLastSpriteUpdate = 0;
@@ -88,6 +121,7 @@ export class Player extends ItemCarrier
         */
 
         $("#playerDelta").text(deltaTime);
+        $("#playerMove").text(this.move);
 
         /*
         if (this.freeControls.enabled)
@@ -98,9 +132,6 @@ export class Player extends ItemCarrier
             this.move == this.MoveType.Mouse ||
             this.move == this.MoveType.Touch)
         {
-            $("#playerMove").text("moving");
-            console.log("player is moving");
-
             /*
             if (!playerControlsEnabled)
                 return;
@@ -113,6 +144,9 @@ export class Player extends ItemCarrier
             {
                 position = this.pointerMoveOrigin;
                 target = this.mouse;
+
+                if (this.mouse.x > window.innerWidth / 2)
+                    console.log("left side mouse");
 
                 velocity = this.pointerMoveOrigin.distanceTo(new Vector3(this.mouse.x, this.mouse.y)) / 2;
             }
@@ -163,10 +197,6 @@ export class Player extends ItemCarrier
             this.camera.position.x = this.position.x;
             this.camera.position.y = this.position.y;
             this.camera.lookAt(this.position);
-        }
-        else
-        {
-            $("#playerMove").text("not moving");
         }
     }
 };
