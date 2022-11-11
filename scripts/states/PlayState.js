@@ -52,52 +52,9 @@ export class PlayState extends State
             return false;
         };
 
-        window.addEventListener("mousemove", (event) =>
-        {
-            player.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-            player.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-        });
-        
-        window.addEventListener("touchmove", (event) =>
-        {
-            player.mouse.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
-            player.mouse.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
-        });
-
-        window.addEventListener("touchstart", (event) =>
-        {
-            player.pointerMoveOrigin.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
-            player.pointerMoveOrigin.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
-
-            player.move = player.MoveType.Touch;
-        });
-        
-        window.addEventListener("mousedown", (event) =>
-        {
-            player.pointerMoveOrigin.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-            player.pointerMoveOrigin.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-            player.move = player.MoveType.Mouse;
-        });
-
-        $(window).on('mouseup touchend', (event) =>
-        {
-            player.move = null;
-        });
-
         window.addEventListener("keydown", (event) =>
         {
-            if (event.code == "KeyO")
-            {
-                player.freeControls.enabled = !player.freeControls.enabled;
-
-                player.camera.position.z = 10;
-                player.camera.position.y = -12;
-                player.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-                console.log("FreeCamera has been toggled.");
-            }
-            else if (event.code == "KeyP")
+            if (event.code == "KeyP")
             {
                 pixelPass.enabled = !pixelPass.enabled;
             }
