@@ -22,12 +22,15 @@ export class Actor extends ItemCarrier
         super.update(deltaTime);
 
         // update the sprite animation time
-        this.timeSinceLastSpriteUpdate += deltaTime;
-        if (this.timeSinceLastSpriteUpdate > this.spriteUpdateTime)
+        if (this.currentSheet)
         {
-            this.currentSheet.texture.offset.x += this.currentSheet.frameWidth;
-            
-            this.timeSinceLastSpriteUpdate = 0;
+            this.timeSinceLastSpriteUpdate += deltaTime;
+            if (this.timeSinceLastSpriteUpdate > this.spriteUpdateTime)
+            {
+                this.currentSheet.texture.offset.x += this.currentSheet.frameWidth;
+                
+                this.timeSinceLastSpriteUpdate = 0;
+            }
         }
     }
 

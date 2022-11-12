@@ -24,8 +24,6 @@ export class Player extends Actor
         this.camera = camera;
 
         this.freeControls = new OrbitControls(this.camera, renderer.domElement);
-        this.freeControls.target.set(0, 0, 0);
-        this.freeControls.update();
         this.freeControls.enabled = false;
 
         this.MoveType = {
@@ -96,10 +94,6 @@ export class Player extends Actor
             {
                 this.freeControls.enabled = !this.freeControls.enabled;
 
-                this.camera.position.z = 10;
-                this.camera.position.y = -12;
-                this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
                 console.log("FreeCamera has been toggled.");
             }
             else
@@ -139,6 +133,7 @@ export class Player extends Actor
 
         this.maxSpeed = 0.2;
         this.slipperyness = 5;
+        this.cameraHeight = 10;
     }
     
     update(deltaTime)
@@ -149,7 +144,10 @@ export class Player extends Actor
         $("#playerMove").text(this.move);
 
         if (this.freeControls.enabled)
+        {
+            this.freeControls.update();
             return;
+        }
 
         if (this.move == this.MoveType.Keyboard ||
             this.move == this.MoveType.Mouse ||
@@ -202,6 +200,7 @@ export class Player extends Actor
         // position the camera relative to the player
         this.camera.position.x = this.position.x;
         this.camera.position.y = this.position.y;
+        this.camera.position.z = this.position.z + this.cameraHeight;
         this.camera.lookAt(this.position);
     }
 };
