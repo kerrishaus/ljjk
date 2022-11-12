@@ -4,7 +4,8 @@ window.lightning = lightning;
 
 export function startRain()
 {
-    $(".interface-container").append("<div class='rain' style='opacity: 0'></div>").fadeIn(3000);
+    // TODO: fade in rain
+    $(".interface-container").append("<div class='rain'></div>").fadeIn(3000);
 }
 
 export function stopRain()

@@ -44,7 +44,6 @@ export class PlayState extends State
             </div>
             <div class='player-stats'>
             </div>
-            <div class='rain'></div>
         </div>`);
 
         //$(document.body).append(`<div id="buyMenu" class="display-flex flex-wrap flex-gap" data-visiblity="hidden"></div>`);
@@ -143,6 +142,8 @@ export class PlayState extends State
             ambientRain.setVolume( 0.2 );
             ambientRain.play();
         });
+
+        Weather.startRain();
 
         // TODO: move this out of here later, this is just proof of concept
 
