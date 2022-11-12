@@ -31,7 +31,7 @@ export class Actor extends ItemCarrier
         }
     }
 
-    addSpriteSheet(name, frames, frameWidth)
+    addSpriteSheet(name, frames)
     {
         if (this.spriteSheets.has(name))
         {
@@ -39,7 +39,7 @@ export class Actor extends ItemCarrier
             return
         }
 
-        const spritesheet = new Spritesheet(name, frames, frameWidth);
+        const spritesheet = new Spritesheet(name, frames);
 
         this.spriteSheets.set(name, spritesheet);
     }

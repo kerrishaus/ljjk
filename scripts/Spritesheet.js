@@ -2,7 +2,7 @@ import { Texture, RepeatWrapping, TextureLoader } from "https://kerrishaus.com/a
 
 export class Spritesheet /*extends Texture*/
 {
-    constructor(filename, frames, textureWidth)
+    constructor(filename, frames)
     {
         this.filename = filename;
         this.frames = frames;

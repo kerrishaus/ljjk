@@ -17,8 +17,8 @@ export class Player extends Actor
 
         super(geometry, material);
 
-        this.addSpriteSheet("player_walk", 2, 64);
-        this.addSpriteSheet("player_idle", 2, 64);
+        this.addSpriteSheet("player_walk", 2);
+        this.addSpriteSheet("player_idle", 2);
         this.setSpriteSheet("player_idle");
 
         this.camera = camera;
@@ -190,6 +190,7 @@ export class Player extends Actor
         if (distance <= 0.5)
             distance = 0;
 
+        // TODO: slow down diagonal movement
         this.velocity = distance / this.slipperyness;
         this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
 
