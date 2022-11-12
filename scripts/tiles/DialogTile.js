@@ -7,7 +7,7 @@ import { Player } from "../Player.js";
 
 export class DialogTile extends Triggerable
 {
-    constructor(message, printSpeed, position, size)
+    constructor(message, position, size)
     {
         const geometry = new PlaneGeometry(size.x, size.y);
 
@@ -19,8 +19,6 @@ export class DialogTile extends Triggerable
 
         spriteSheet.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-        //spriteSheet.rotation = 1.5708;
-
         const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
         super(geometry, material, size.x, size.y);
@@ -29,8 +27,7 @@ export class DialogTile extends Triggerable
 
         this.name = "dialog";
 
-        this.dialog = new DialogBox(message, printSpeed);
-        this.printSpeed = printSpeed;
+        this.dialog = new DialogBox(message);
         this.printInterval = null;
     }
     

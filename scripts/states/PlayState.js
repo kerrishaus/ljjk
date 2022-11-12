@@ -1,15 +1,17 @@
 import { State } from "./State.js";
 
 import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module.js";
-
 import { GLTFLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/GLTFLoader.js';
 
 import * as MathUtility from "../MathUtility.js";
 import * as PageUtility from "../PageUtility.js";
 
+import * as Weather from "../Weather.js";
+
 import { Triggerable } from "../geometry/Triggerable.js";
 import { DialogTile } from "../tiles/DialogTile.js";
 import { Chest } from "../tiles/Chest.js";
+
 
 export class PlayState extends State
 {
@@ -39,6 +41,8 @@ export class PlayState extends State
                         If you ever see this text, someone got fired!
                     </span>
                 </div>
+            </div>
+            <div class='player-stats'>
             </div>
             <div class='rain'></div>
         </div>`);
@@ -142,7 +146,7 @@ export class PlayState extends State
 
         // TODO: move this out of here later, this is just proof of concept
 
-        const dialog = new DialogTile("hello my name is tyler", 50, new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
+        const dialog = new DialogTile("hello my name is tyler", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
         dialog.position.x = 10;
         scene.add(dialog);
 
@@ -168,49 +172,6 @@ export class PlayState extends State
         window.onbeforeunload = null;
 
         console.log("Cleaned up PlayState.");
-    }
-
-    physicsTick(deltaTime)
-    {
-        physicsWorld.stepSimulation(deltaTime, 10);
-
-        for (const object of physicsBodies)
-        {
-            object.motionState.getWorldTransform(tmpTransform);
-
-            const pos = tmpTransform.getOrigin();
-            const quat = tmpTransform.getRotation();
-            const pos3 = new THREE.Vector3(pos.x(), pos.y(), pos.z());
-            const quat3 = new THREE.Quaternion(quat.x(), quat.y(), quat.z(), quat.w());
-            
-            object.position.copy(pos3);
-            object.quaternion.copy(quat3);
-        }
-
-        this.checkCollisions();
-    }
-
-    checkCollisions()
-    {
-        let dispatcher = physicsWorld.getDispatcher();
-        let numManifolds = dispatcher.getNumManifolds();
-
-        for (let i = 0; i < numManifolds; i++)
-        {
-            let contactManifold = dispatcher.getManifoldByIndexInternal(i);
-            let numContacts = contactManifold.getNumContacts();
-
-            for (let j = 0; j < numContacts; j++)
-            {
-                let contactPoint = contactManifold.getContactPoint(j);
-                let distance = contactPoint.getDistance();
-
-                if (distance > 0.0)
-                    continue;
-
-                console.log({ manifoldIndex: i, contactIndex: j, distance: distance });
-            }
-        }
     }
 
     entityTick(deltaTime)
@@ -262,16 +223,11 @@ export class PlayState extends State
 
         const deltaTime = this.clock.getDelta();
 
-        /*
-        if (playerControlsEnabled)
-            this.playerMovement(deltaTime);
-        */
-
         if (entityUpdatesEnabled)
             this.entityTick(deltaTime);
 
         if (physicsUpdatesEnabled)
-            this.physicsTick(deltaTime);
+            scene.physicsTick(deltaTime);
 
         /*
         if (playerControlsEnabled && freeControls.enabled)

@@ -3,33 +3,23 @@ import { Plane, Raycaster, SphereGeometry, Mesh, MeshPhongMaterial, Vector2, Rep
 import { TransformControls } from 'https://kerrishaus.com/assets/threejs/examples/jsm/controls/TransformControls.js';
 import { OrbitControls } from 'https://kerrishaus.com/assets/threejs/examples/jsm/controls/OrbitControls.js';
 
-import { ItemCarrier } from "./ItemCarrier.js";
-
 import * as GeometryUtil from "./geometry/GeometryUtility.js";
 
 import * as MathUtility from "./MathUtility.js";
+import { Actor } from "./Actor.js";
 
-export class Player extends ItemCarrier
+export class Player extends Actor
 {
     constructor(camera)
     {
         const geometry = new PlaneGeometry(2, 2);
-
-        const spriteSheet = new TextureLoader().load('textures/sprites/player.png');
-
-        spriteSheet.wrapS = RepeatWrapping;
-        spriteSheet.wrapT = RepeatWrapping;
-        spriteSheet.repeat.set(0.058, 1);
-
-        spriteSheet.anisotropy = renderer.capabilities.getMaxAnisotropy();
-
-        //spriteSheet.rotation = 1.5708;
-
-        const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
+        const material = new MeshStandardMaterial({ transparent: true });
 
         super(geometry, material);
 
-        this.spriteSheet = spriteSheet;
+        this.addSpriteSheet("player_walk", 2, 64);
+        this.addSpriteSheet("player_idle", 2, 64);
+        this.setSpriteSheet("player_idle");
 
         this.camera = camera;
 
@@ -48,7 +38,6 @@ export class Player extends ItemCarrier
         this.keys = new Array();
         this.pointerMoveOrigin = new Vector2();
         this.moving = false;
-        this.pointerMove = false;
         
         this.moveTarget = new Mesh(new SphereGeometry(0.25, 24, 8), new MeshPhongMaterial({ color: 0x00ffff, 
                                                                                             flatShading: true,
@@ -56,7 +45,7 @@ export class Player extends ItemCarrier
                                                                                             opacity: 0.7,
                                                                                         }));
 
-        scene.add(this.moveTarget);
+        //scene.add(this.moveTarget);
 
         this.plane = new Plane(new Vector3(0, 0, 0.5), 0);
 
@@ -83,7 +72,7 @@ export class Player extends ItemCarrier
             this.pointerMoveOrigin.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
             this.pointerMoveOrigin.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
 
-            this.move = this.MoveType.Touch;
+            //this.move = this.MoveType.Touch;
         });
         
         window.addEventListener("mousedown", (event) =>
@@ -91,7 +80,7 @@ export class Player extends ItemCarrier
             this.pointerMoveOrigin.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             this.pointerMoveOrigin.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-            this.move = this.MoveType.Mouse;
+            //this.move = this.MoveType.Mouse;
         });
 
         $(window).on('mouseup touchend', (event) =>
@@ -126,6 +115,7 @@ export class Player extends ItemCarrier
                     case "KeyD":
                     case "ArrowRight":
                         this.move = this.MoveType.Keyboard;
+                        this.setSpriteSheet("player_walk");
                         break;
                 };
             }
@@ -139,14 +129,16 @@ export class Player extends ItemCarrier
                   this.keys["KeyA"] || this.keys["ArrowLeft"] ||
                   this.keys["KeyS"] || this.keys["ArrowDown"] ||
                   this.keys["KeyD"] || this.keys["ArrowRight"]))
+                {
                     this.move = null;
+                    this.setSpriteSheet("player_idle");
+                }
         });
 
         this.velocity = 0;
 
-        this.maxSpeed = 0.3;
-        this.spriteUpdateTime = 0.25; // in seconds
-        this.timeSinceLastSpriteUpdate = 0;
+        this.maxSpeed = 0.2;
+        this.slipperyness = 5;
     }
     
     update(deltaTime)
@@ -181,15 +173,6 @@ export class Player extends ItemCarrier
                 if (this.keys["KeyD"] || this.keys["ArrowRight"])
                     this.moveTarget.translateX(moveAmount);
             }
-
-            // update the sprite animation time
-            this.timeSinceLastSpriteUpdate += deltaTime;
-            if (this.timeSinceLastSpriteUpdate > this.spriteUpdateTime)
-            {
-                this.spriteSheet.offset.x += 0.0586;
-                
-                this.timeSinceLastSpriteUpdate = 0;
-            }
         }
 
         let position = new Vector2(), target = new Vector2();
@@ -200,7 +183,14 @@ export class Player extends ItemCarrier
         target.x = this.moveTarget.position.x;
         target.y = this.moveTarget.position.y;
 
-        this.velocity = this.position.distanceTo(this.moveTarget.position) / 20; // TODO: what does this 20 mean?
+        let distance = this.position.distanceTo(this.moveTarget.position);
+
+        // FIXME: without this, the camera is constantly trying to move
+        // and causes weird vibrating with a low slipperyness value
+        if (distance <= 0.5)
+            distance = 0;
+
+        this.velocity = distance / this.slipperyness;
         this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
 
         // move the player their direction
