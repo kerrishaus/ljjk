@@ -128,12 +128,14 @@ export class Player extends Actor
 
                 console.log(`Toggled rigid movement: ${this.rigidMovementEnabled}`);
             }
+            /*
             else if (event.code == "KeyC")
             {
                 this.diagonalMovementEnabled = !this.diagonalMovementEnabled;
 
                 console.log(`Toggled diagonal movement: ${this.diagonalMovementEnabled}`);
             }
+            */
             else
             {
                 switch (event.code)
