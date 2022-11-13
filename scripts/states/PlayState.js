@@ -30,10 +30,13 @@ export class PlayState extends State
                 <p>Use the mouse, WASD or arrow keys to control movement.</p>
                 <p>Press <kbd>P</kbd> to disable pixelation.</p>
                 <p>Press <kbd>V</kbd> to toggle rigid/smooth movement.</p>
-                <p>Press <kbd>O1</kbd> to toggle free camera.</p>
+                <p>Press <kbd>O</kbd> to toggle free camera.</p>
             </div>
             <div class='debug'>
                 <p>player move: <span id='playerMove'>nil</span></p>
+                <p>player move rigid: <span id='playerMoveRigid'>false</span></p>
+                <p>player move direction: <span id='playerMoveRigid'>false</span></p>
+                <p>player diagonal allowed: <span id='playerMoveDirection'>false</span></p>
                 <p>player delta: <span id='playerDelta'>nil</span></p>
             </div>
             <div class='dialog-container no-mouse-passthrough'>

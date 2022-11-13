@@ -54,5 +54,8 @@ export class StateMachine
     {
         if (this.states.length > 0)
             this.states[this.states.length - 1].update(deltaTime);
+
+        if (deltaTime > 1)
+            console.warn(`Slow simulation speed! ${deltaTime}`);
     }
 };

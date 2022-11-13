@@ -26,8 +26,6 @@ export class Player extends Actor
         this.freeControls = new OrbitControls(this.camera, renderer.domElement);
         this.freeControls.enabled = false;
 
-        this.rigidMovementEnabled = false;
-
         this.MoveType = {
             Mouse: 'Mouse',
             Touch: 'Touch',
@@ -38,6 +36,18 @@ export class Player extends Actor
         this.keys = new Array();
         this.pointerMoveOrigin = new Vector2();
         this.moving = false;
+        this.moveDirection = null;
+
+        this.MoveDirections = {
+            North: "North",
+            NorthEast: "NorthEast",
+            East: "East",
+            SouthEast: "SouthEast",
+            South: "South",
+            SouthWest: "SouthWest",
+            West: "West",
+            NorthWest: "NorthWest"
+        };
         
         this.moveTarget = new Mesh(new SphereGeometry(0.25, 24, 8), new MeshPhongMaterial({ color: 0x00ffff, 
                                                                                             flatShading: true,
@@ -45,7 +55,7 @@ export class Player extends Actor
                                                                                             opacity: 0.7,
                                                                                         }));
 
-        //scene.add(this.moveTarget);
+        scene.add(this.moveTarget);
 
         this.plane = new Plane(new Vector3(0, 0, 0.5), 0);
 
@@ -65,10 +75,18 @@ export class Player extends Actor
         {
             this.mouse.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
             this.mouse.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
+
+            if (this.move == this.MoveType.Mouse)
+            {
+
+            }
         });
 
         window.addEventListener("touchstart", (event) =>
         {
+            // on mobile, you want to emulate a joystick to control player movement
+            // so we set the location where the finger was first placed
+            // the move direction is relative to where the touch was initiated from
             this.pointerMoveOrigin.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
             this.pointerMoveOrigin.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
 
@@ -77,6 +95,9 @@ export class Player extends Actor
         
         window.addEventListener("mousedown", (event) =>
         {
+            // TODO: i think this should be the middle of the screen
+            // when you use the mouse to move, you expect it to be relative to the character's position on screen
+            // as if you were telling him to go where you clicked
             this.pointerMoveOrigin.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             this.pointerMoveOrigin.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
@@ -131,6 +152,7 @@ export class Player extends Actor
                   this.keys["KeyD"] || this.keys["ArrowRight"]))
                 {
                     this.move = null;
+                    this.moveDirection = null;
                     this.setSpriteSheet("player_idle");
                 }
         });
@@ -147,7 +169,9 @@ export class Player extends Actor
         super.update(deltaTime);
 
         $("#playerDelta").text(deltaTime);
-        $("#playerMove").text(this.move);
+        $("#playerMove").text(this.move || "none");
+        $("#playerMoveRigid").text(this.rigidMovementEnabled);
+        $("#playerMoveDirection").text(this.moveDirection || "none");
 
         if (this.freeControls.enabled)
         {
@@ -155,38 +179,133 @@ export class Player extends Actor
             return;
         }
 
-        if (this.rigidMovementEnabled)
+        if (this.move)
         {
-            if (this.keys["KeyW"] || this.keys["ArrowUp"])
-                this.translateY(this.maxSpeed);
-            if (this.keys["KeyA"] || this.keys["ArrowLeft"])
-                this.translateX(-this.maxSpeed);
-            if (this.keys["KeyS"] || this.keys["ArrowDown"])
-                this.translateY(-this.maxSpeed);
-            if (this.keys["KeyD"] || this.keys["ArrowRight"])
-                this.translateX(this.maxSpeed);
+            // TODO: i would prefer this be done in the key press events,
+            // but it's a little complicated to do that right now, so since
+            // this works, i'm going to keep it here for now /kenny
+            if (this.move == this.MoveType.Keyboard)
+            {
+                if (this.keys["KeyW"])
+                {
+                    if (this.keys["KeyA"])
+                        this.moveDirection = this.MoveDirections.NorthWest;
+                    else if (this.keys["KeyD"])
+                        this.moveDirection = this.MoveDirections.NorthEast;
+                    else
+                        this.moveDirection = this.MoveDirections.North;
+                }
+                else if (this.keys["KeyA"])
+                {
+                    if (this.keys["KeyW"])
+                        this.moveDirection = this.MoveDirections.NorthWest;
+                    else if (this.keys["KeyS"])
+                        this.moveDirection = this.MoveDirections.SouthWest;
+                    else
+                        this.moveDirection = this.MoveDirections.West;
+                }
+                else if (this.keys["KeyS"])
+                {
+                    if (this.keys["KeyA"])
+                        this.moveDirection = this.MoveDirections.SouthWest;
+                    else if (this.keys["KeyD"])
+                        this.moveDirection = this.MoveDirections.SouthEast;
+                    else
+                        this.moveDirection = this.MoveDirections.South;
+                }
+                else if (this.keys["KeyD"])
+                {
+                    if (this.keys["KeyW"])
+                        this.moveDirection = this.MoveDirections.NorthEast;
+                    else if (this.keys["KeyS"])
+                        this.moveDirection = this.MoveDirections.SouthEast;
+                    else
+                        this.moveDirection = this.MoveDirections.East;
+                }
+            }
 
-            // position the camera relative to the player
-            this.camera.position.x = this.position.x;
-            this.camera.position.y = this.position.y;
-            this.camera.position.z = this.position.z + this.cameraHeight;
-            this.camera.lookAt(this.position);
-
-            return;
+            switch (this.moveDirection)
+            {
+                case this.MoveDirections.North:
+                    this.moveTarget.translateY(this.maxSpeed);
+                    break;
+                case this.MoveDirections.NorthEast:
+                    this.moveTarget.translateY(this.maxSpeed / 1.5);
+                    this.moveTarget.translateX(this.maxSpeed / 1.5);
+                    break;
+                case this.MoveDirections.NorthWest:
+                    this.moveTarget.translateY(this.maxSpeed / 1.5);
+                    this.moveTarget.translateX(-this.maxSpeed / 1.5);
+                    break;
+                case this.MoveDirections.South:
+                    this.moveTarget.translateY(-this.maxSpeed);
+                    break;
+                case this.MoveDirections.SouthEast:
+                    this.moveTarget.translateY(-this.maxSpeed / 1.5);
+                    this.moveTarget.translateX(this.maxSpeed / 1.5);
+                    break;
+                case this.MoveDirections.SouthWest:
+                    this.moveTarget.translateY(-this.maxSpeed / 1.5);
+                    this.moveTarget.translateX(-this.maxSpeed / 1.5);
+                    break;
+                case this.MoveDirections.East:
+                    this.moveTarget.translateX(this.maxSpeed);
+                    break;
+                case this.MoveDirections.West:
+                    this.moveTarget.translateX(-this.maxSpeed);
+                    break;
+            };
         }
 
+        if (!this.rigidMovementEnabled)
+        {
+            let position = new Vector2(), target = new Vector2();
+
+            position.x = this.position.x;
+            position.y = this.position.y;
+
+            target.x = this.moveTarget.position.x;
+            target.y = this.moveTarget.position.y;
+
+            let distance = this.position.distanceTo(this.moveTarget.position);
+
+            // apparently this isn't needed anymore?
+            /*
+            // FIXME: without this, the camera is constantly trying to move
+            // and causes weird vibrating with a low slipperyness value
+            if (distance <= 0.1)
+                distance = 0;
+            */
+
+            // TODO: slow down diagonal movement
+            this.velocity = distance / this.slipperyness;
+            this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
+
+            // move the player their direction
+            this.rotation.z = MathUtility.angleToPoint(position, target);
+            this.translateY(this.velocity);
+            this.rotation.z = 0;
+        }
+        else
+            this.position.copy(this.moveTarget.position);
+        
+        // position the camera relative to the player
+        this.camera.position.x = this.position.x;
+        this.camera.position.y = this.position.y;
+        this.camera.position.z = this.position.z + this.cameraHeight;
+        this.camera.lookAt(this.position);
+
+/*
         if (this.move == this.MoveType.Keyboard ||
             this.move == this.MoveType.Mouse ||
             this.move == this.MoveType.Touch)
         {
-            /*
-            if (!playerControlsEnabled)
-                return;
-            */
-
             if (this.move == this.MoveType.Keyboard)
             {
-                const moveAmount = this.maxSpeed;
+                let moveAmount = this.maxSpeed;
+
+                if (this.keys.length > 1)
+                    moveAmount *= 0.1;
 
                 if (this.keys["KeyW"] || this.keys["ArrowUp"])
                     this.moveTarget.translateY(moveAmount);
@@ -199,34 +318,40 @@ export class Player extends Actor
             }
         }
 
-        let position = new Vector2(), target = new Vector2();
+        if (!this.rigidMovementEnabled)
+        {
+            let position = new Vector2(), target = new Vector2();
 
-        position.x = this.position.x;
-        position.y = this.position.y;
+            position.x = this.position.x;
+            position.y = this.position.y;
 
-        target.x = this.moveTarget.position.x;
-        target.y = this.moveTarget.position.y;
+            target.x = this.moveTarget.position.x;
+            target.y = this.moveTarget.position.y;
 
-        let distance = this.position.distanceTo(this.moveTarget.position);
+            let distance = this.position.distanceTo(this.moveTarget.position);
 
-        // FIXME: without this, the camera is constantly trying to move
-        // and causes weird vibrating with a low slipperyness value
-        if (distance <= 0.5)
-            distance = 0;
+            // FIXME: without this, the camera is constantly trying to move
+            // and causes weird vibrating with a low slipperyness value
+            if (distance <= 0.5)
+                distance = 0;
 
-        // TODO: slow down diagonal movement
-        this.velocity = distance / this.slipperyness;
-        this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
+            // TODO: slow down diagonal movement
+            this.velocity = distance / this.slipperyness;
+            this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
 
-        // move the player their direction
-        this.rotation.z = MathUtility.angleToPoint(position, target);
-        this.translateY(this.velocity);
-        this.rotation.z = 0;
+            // move the player their direction
+            this.rotation.z = MathUtility.angleToPoint(position, target);
+            this.translateY(this.velocity);
+            this.rotation.z = 0;
+        }
+        else
+            this.position.copy(this.moveTarget.position);
         
         // position the camera relative to the player
         this.camera.position.x = this.position.x;
         this.camera.position.y = this.position.y;
         this.camera.position.z = this.position.z + this.cameraHeight;
         this.camera.lookAt(this.position);
+*/
     }
 };
