@@ -26,6 +26,8 @@ export class Player extends Actor
         this.freeControls = new OrbitControls(this.camera, renderer.domElement);
         this.freeControls.enabled = false;
 
+        this.rigidMovementEnabled = false;
+
         this.MoveType = {
             Mouse: 'Mouse',
             Touch: 'Touch',
@@ -96,6 +98,10 @@ export class Player extends Actor
 
                 console.log("FreeCamera has been toggled.");
             }
+            else if (event.code == "KeyV")
+            {
+                this.rigidMovementEnabled = !this.rigidMovementEnabled;
+            }
             else
             {
                 switch (event.code)
@@ -146,6 +152,26 @@ export class Player extends Actor
         if (this.freeControls.enabled)
         {
             this.freeControls.update();
+            return;
+        }
+
+        if (this.rigidMovementEnabled)
+        {
+            if (this.keys["KeyW"] || this.keys["ArrowUp"])
+                this.translateY(this.maxSpeed);
+            if (this.keys["KeyA"] || this.keys["ArrowLeft"])
+                this.translateX(-this.maxSpeed);
+            if (this.keys["KeyS"] || this.keys["ArrowDown"])
+                this.translateY(-this.maxSpeed);
+            if (this.keys["KeyD"] || this.keys["ArrowRight"])
+                this.translateX(this.maxSpeed);
+
+            // position the camera relative to the player
+            this.camera.position.x = this.position.x;
+            this.camera.position.y = this.position.y;
+            this.camera.position.z = this.position.z + this.cameraHeight;
+            this.camera.lookAt(this.position);
+
             return;
         }
 

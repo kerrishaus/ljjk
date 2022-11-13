@@ -28,8 +28,9 @@ export class PlayState extends State
         <div class="interface-container mouse-passthrough">
             <div class='instructions'>
                 <p>Use the mouse, WASD or arrow keys to control movement.</p>
-                <p>Press P to disable pixelation.</p>
-                <p>Press O to toggle free camera.</p>
+                <p>Press <kbd>P</kbd> to disable pixelation.</p>
+                <p>Press <kbd>V</kbd> to toggle rigid/smooth movement.</p>
+                <p>Press <kbd>O1</kbd> to toggle free camera.</p>
             </div>
             <div class='debug'>
                 <p>player move: <span id='playerMove'>nil</span></p>
@@ -84,7 +85,7 @@ export class PlayState extends State
         const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
 
         const floor      = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.position.z = -1;
+        floor.position.z = 0;
 
         scene.add(floor);
 

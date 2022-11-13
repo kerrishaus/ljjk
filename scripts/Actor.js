@@ -60,7 +60,13 @@ export class Actor extends ItemCarrier
             return;
         }
 
-        this.currentSheet = null;
+        if (this.currentSheet)
+        {
+            if (this.currentSheet.filename == name)
+                return;
+
+            this.currentSheet = null;
+        }
 
         this.currentSheet = this.spriteSheets.get(name);
         this.material.map = this.currentSheet.texture;
