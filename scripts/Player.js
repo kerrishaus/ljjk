@@ -38,6 +38,9 @@ export class Player extends Actor
         this.moving = false;
         this.moveDirection = null;
 
+        this.rigidMovementEnabled = false;
+        this.diagonalMovementEnabled = true;
+
         this.MoveDirections = {
             North: "North",
             NorthEast: "NorthEast",
@@ -117,11 +120,19 @@ export class Player extends Actor
             {
                 this.freeControls.enabled = !this.freeControls.enabled;
 
-                console.log("FreeCamera has been toggled.");
+                console.log(`Toggle free camera: ${this.freeControls.enabled}`);
             }
             else if (event.code == "KeyV")
             {
                 this.rigidMovementEnabled = !this.rigidMovementEnabled;
+
+                console.log(`Toggled rigid movement: ${this.rigidMovementEnabled}`);
+            }
+            else if (event.code == "KeyC")
+            {
+                this.diagonalMovementEnabled = !this.diagonalMovementEnabled;
+
+                console.log(`Toggled diagonal movement: ${this.diagonalMovementEnabled}`);
             }
             else
             {
@@ -195,7 +206,7 @@ export class Player extends Actor
                     else
                         this.moveDirection = this.MoveDirections.North;
                 }
-                else if (this.keys["KeyA"])
+                if (this.keys["KeyA"])
                 {
                     if (this.keys["KeyW"])
                         this.moveDirection = this.MoveDirections.NorthWest;
@@ -204,7 +215,7 @@ export class Player extends Actor
                     else
                         this.moveDirection = this.MoveDirections.West;
                 }
-                else if (this.keys["KeyS"])
+                if (this.keys["KeyS"])
                 {
                     if (this.keys["KeyA"])
                         this.moveDirection = this.MoveDirections.SouthWest;
@@ -213,7 +224,7 @@ export class Player extends Actor
                     else
                         this.moveDirection = this.MoveDirections.South;
                 }
-                else if (this.keys["KeyD"])
+                if (this.keys["KeyD"])
                 {
                     if (this.keys["KeyW"])
                         this.moveDirection = this.MoveDirections.NorthEast;
@@ -281,7 +292,10 @@ export class Player extends Actor
             this.velocity = distance / this.slipperyness;
             this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
 
-            // move the player their direction
+            // move the player their direction by temporarily
+            // changing the player rotation to face the moveTarget,
+            // moving them the velocity towards the movetarget,
+            // and then setting their rotation back to zero
             this.rotation.z = MathUtility.angleToPoint(position, target);
             this.translateY(this.velocity);
             this.rotation.z = 0;
@@ -294,64 +308,5 @@ export class Player extends Actor
         this.camera.position.y = this.position.y;
         this.camera.position.z = this.position.z + this.cameraHeight;
         this.camera.lookAt(this.position);
-
-/*
-        if (this.move == this.MoveType.Keyboard ||
-            this.move == this.MoveType.Mouse ||
-            this.move == this.MoveType.Touch)
-        {
-            if (this.move == this.MoveType.Keyboard)
-            {
-                let moveAmount = this.maxSpeed;
-
-                if (this.keys.length > 1)
-                    moveAmount *= 0.1;
-
-                if (this.keys["KeyW"] || this.keys["ArrowUp"])
-                    this.moveTarget.translateY(moveAmount);
-                if (this.keys["KeyA"] || this.keys["ArrowLeft"])
-                    this.moveTarget.translateX(-moveAmount);
-                if (this.keys["KeyS"] || this.keys["ArrowDown"])
-                    this.moveTarget.translateY(-moveAmount);
-                if (this.keys["KeyD"] || this.keys["ArrowRight"])
-                    this.moveTarget.translateX(moveAmount);
-            }
-        }
-
-        if (!this.rigidMovementEnabled)
-        {
-            let position = new Vector2(), target = new Vector2();
-
-            position.x = this.position.x;
-            position.y = this.position.y;
-
-            target.x = this.moveTarget.position.x;
-            target.y = this.moveTarget.position.y;
-
-            let distance = this.position.distanceTo(this.moveTarget.position);
-
-            // FIXME: without this, the camera is constantly trying to move
-            // and causes weird vibrating with a low slipperyness value
-            if (distance <= 0.5)
-                distance = 0;
-
-            // TODO: slow down diagonal movement
-            this.velocity = distance / this.slipperyness;
-            this.velocity = MathUtility.clamp(this.velocity, 0, this.maxSpeed);
-
-            // move the player their direction
-            this.rotation.z = MathUtility.angleToPoint(position, target);
-            this.translateY(this.velocity);
-            this.rotation.z = 0;
-        }
-        else
-            this.position.copy(this.moveTarget.position);
-        
-        // position the camera relative to the player
-        this.camera.position.x = this.position.x;
-        this.camera.position.y = this.position.y;
-        this.camera.position.z = this.position.z + this.cameraHeight;
-        this.camera.lookAt(this.position);
-*/
     }
 };
