@@ -25,7 +25,7 @@ export class PlayState extends State
         PageUtility.addStyle("dialog/dialogBox");
 
         $(document.body).append(`
-        <div class="interface-container">
+        <div class="interface-container mouse-passthrough">
             <div class='instructions'>
                 <p>Use the mouse, WASD or arrow keys to control movement.</p>
                 <p>Press P to disable pixelation.</p>
@@ -35,7 +35,7 @@ export class PlayState extends State
                 <p>player move: <span id='playerMove'>nil</span></p>
                 <p>player delta: <span id='playerDelta'>nil</span></p>
             </div>
-            <div class='dialog-container'>
+            <div class='dialog-container no-mouse-passthrough'>
                 <div class='dialog-box hidden bottom'>
                     <span class='dialog-message'>
                         If you ever see this text, someone got fired!
@@ -75,7 +75,7 @@ export class PlayState extends State
 
         // below this line is proof of concept for scary game
 
-        const floorGeometry = new THREE.BoxGeometry(50, 50, 1);
+        const floorGeometry = new THREE.PlaneGeometry(50, 50);
 
         const floorTexture  = new THREE.TextureLoader().load('textures/terrain/grassdirt-big.png');
         floorTexture.repeat = new THREE.Vector2(3, 3);
@@ -223,17 +223,12 @@ export class PlayState extends State
         window.currentRequestFrame = requestAnimationFrame(() => this.animate());
 
         const deltaTime = this.clock.getDelta();
-
-        if (entityUpdatesEnabled)
-            this.entityTick(deltaTime);
-
+        
         if (physicsUpdatesEnabled)
             scene.physicsTick(deltaTime);
 
-        /*
-        if (playerControlsEnabled && freeControls.enabled)
-            freeControls.update();
-        */
+        if (entityUpdatesEnabled)
+            this.entityTick(deltaTime);
 
         if (renderUpdatesEnabled)
         {

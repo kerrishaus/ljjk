@@ -83,13 +83,13 @@ export class StartupState extends State
             window.renderUpdatesEnabled  = true;
             window.entityUpdatesEnabled  = true;
             window.physicsUpdatesEnabled = true;
-            window.playerControlsEnabled = true;
 
             window.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
             camera.position.z = 10;
             camera.lookAt(new THREE.Vector3(0, 0, 0));
 
             window.composer = new EffectComposer(renderer);
+            
             composer.addPass(new RenderPass(scene, camera));
 
             //composer.addPass(new UnrealBloomPass(new THREE.Vector2(2048, 2048), 1, 0.4, 0.8));

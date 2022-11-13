@@ -7,7 +7,7 @@ import { Player } from "../Player.js";
 
 export class Chest extends Triggerable
 {
-    constructor(message, printSpeed, triggerWidth, triggerLength)
+    constructor(message, printSpeed)
     {
         const geometry = new PlaneGeometry(1, 1);
 
@@ -23,7 +23,7 @@ export class Chest extends Triggerable
 
         const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
-        super(geometry, material, triggerWidth, triggerLength);
+        super(geometry, material, 2, 2);
 
         this.spriteSheet = spriteSheet;
 

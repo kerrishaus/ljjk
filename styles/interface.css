@@ -22,3 +22,23 @@
 {
     margin: 0;
 }
+
+.mouse-passthrough
+{
+    touch-action: none;
+    
+    user-select: none;
+    -webkit-user-select: none;
+
+    pointer-events: none;
+}
+
+.no-mouse-passthrough
+{
+    touch-action: auto !important;
+
+    user-select: auto !important;
+    -webkit-user-select: auto !important;
+
+    pointer-events: all !important;
+}

@@ -14,7 +14,7 @@ export class Triggerable extends DynamicMesh
         this.triggerObject = new Mesh(triggerGeometry, triggerMaterial);
         this.triggerObject.geometry.computeBoundingBox();
         this.attach(this.triggerObject);
-        this.triggerObject.position.z -= 0.4;
+        this.triggerObject.position.z = 0;
         
         this.trigger = new Box3();
         
