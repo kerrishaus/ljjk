@@ -9,6 +9,7 @@ import * as PageUtility from "../PageUtility.js";
 import { PlayState } from "./PlayState.js";
 import { Player } from "../Player.js";
 import * as SaveLoader from "../SaveLoader.js";
+import { Tile } from "../tiles/Tile.js";
 
 export class LoadSaveState extends State
 {
@@ -45,25 +46,7 @@ export class LoadSaveState extends State
         player.rotation.y = saveData.player.rotation.y;
         player.rotation.z = saveData.player.rotation.z;
 
-        for (const item of saveData.player.carriedItems)
-        {
-            let newItem = null;
-
-            switch (item.type)
-            {
-                /*
-                case "sodaCan":
-                    newItem = new SodaCan(player.position);
-                    break;
-                */
-                default:
-                    console.log("Unknown item type: " + item);
-                    continue;
-            }
-
-            newItem.setTarget(player.position, new THREE.Vector3());
-            player.carriedItems.push(newItem);
-        }
+        // TODO: load player inventory
         
         console.log("LoadSaveState complete.");
 
@@ -79,25 +62,17 @@ export class LoadSaveState extends State
         console.log("LoadingState cleaned up.");
     }
 
-    loadCarriedItem(carrier, itemType)
+    loadTile(tile)
     {
+        let newTile = null
 
-    }
-
-    loadTile(tileData)
-    {
-        if (tileData.type == "recycleBin")
+        if (tile.type == "basic")
         {
-            /*
-            shop.recycleBin = new RecycleBin(6, 4);
-            shop.recycleBin.position.x = tileData.position.x;
-            shop.recycleBin.position.y = tileData.position.y;
-            scene.add(shop.recycleBin);
-            */
+
         }
-        else if (tileData.type == "")
+        else if (tile.type == "trigger")
         {
-
+            
         }
     }
 };

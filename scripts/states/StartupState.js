@@ -96,8 +96,8 @@ export class StartupState extends State
             
             window.pixelPass = new ShaderPass(PixelShader);
             pixelPass.uniforms['resolution'].value = new THREE.Vector2(window.innerWidth, window.innerHeight);
-            pixelPass.uniforms['resolution'].value.multiplyScalar(window.devicePixelRatio);
-            pixelPass.uniforms[ 'pixelSize' ].value = 6;
+            //pixelPass.uniforms['resolution'].value.multiplyScalar(window.devicePixelRatio);
+            pixelPass.uniforms['pixelSize'].value = 6;
             composer.addPass(pixelPass);
 
             console.log("Three is ready.");

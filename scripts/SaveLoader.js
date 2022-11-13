@@ -2,6 +2,14 @@ export const saveDataRaw =
 `
 {
     "version":1,
+    "world":{
+        "tiles":[
+
+        ],
+        "entities":[
+
+        ]
+    },
     "shop":{
         "type":1,
         "money":25,
@@ -102,14 +110,10 @@ export const saveDataRaw =
             "y":0,
             "z":0
         },
-        "carriedItems":[
+        "inventory":[
             {
-                "type":"tomato",
-                "position":{
-                    "x":0,
-                    "y":0,
-                    "z":0
-                }
+                "itemid":1,
+                "quantity": 10
             }
         ]
     }
