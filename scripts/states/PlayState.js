@@ -163,4 +163,77 @@ export class PlayState extends State
         PageUtility.removeStyle("game");
         PageUtility.removeStyle("banner");
         PageUtility.removeStyle("interface");
-        PageUtility.
+        PageUtility.removeStyle("buyMenu");
+
+        window.onbeforeunload = null;
+
+        console.log("Cleaned up PlayState.");
+    }
+
+    entityTick(deltaTime)
+    {
+        scene.children.forEach((object) =>
+        {
+            if ('update' in object)
+                object.update(deltaTime);
+
+            if (object instanceof Triggerable)
+            {
+                if (player.box.intersectsBox(object.trigger))
+                {
+                    if (object.triggeringObjects.includes(player))
+                        object.onTrigger(player);
+                    else
+                        object.onStartTrigger(player);
+                }
+                else if (object.triggeringObjects.includes(player))
+                    object.onStopTrigger(player);
+
+                /*
+                // TODO: change this to entity
+                for (const customer of shop.customers)
+                {
+                    // customer intersects with Triggerable's trigger
+                    if (object.trigger.intersectsBox(customer.box))
+                    {
+                        // object is not currently triggered by the customer
+                        if (!object.triggeringObjects.includes(customer))
+                            object.onTrigger(customer);
+                    }
+                    // customer is not intersecting with this trigger
+                    else
+                    {
+                        // if this trigger is triggered by the customer, stop triggering
+                        if (object.triggeringObjects.includes(customer))
+                            object.onStopTrigger(customer);
+                    }
+                }
+                */
+            }
+        });
+    }
+    
+    animate()
+    {
+        window.currentRequestFrame = requestAnimationFrame(() => this.animate());
+
+        const deltaTime = this.clock.getDelta();
+        
+        if (physicsUpdatesEnabled)
+            scene.physicsTick(deltaTime);
+
+        if (entityUpdatesEnabled)
+            this.entityTick(deltaTime);
+
+        if (renderUpdatesEnabled)
+        {
+            /*
+            if (mixer)
+                mixer.update(deltaTime);
+            */
+            
+            composer.render();
+            htmlRenderer.render(scene, player.camera);
+        }
+    };
+}
