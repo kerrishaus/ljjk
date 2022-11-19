@@ -61,14 +61,6 @@ export class PlayState extends State
             return false;
         };
 
-        window.addEventListener("keydown", (event) =>
-        {
-            if (event.code == "KeyP")
-            {
-                pixelPass.enabled = !pixelPass.enabled;
-            }
-        });
-
         /*
         // TODO: don't do this during dev
         window.onbeforeunload = function(event)
