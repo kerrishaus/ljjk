@@ -8,7 +8,6 @@ import { RenderPass } from 'https://kerrishaus.com/assets/threejs/examples/jsm/p
 import { UnrealBloomPass } from 'https://kerrishaus.com/assets/threejs/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 import { ShaderPass } from "https://kerrishaus.com/assets/threejs/examples/jsm/postprocessing/ShaderPass.js";
-import { PixelShader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/shaders/PixelShader.js';
 
 import { GLTFLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/DRACOLoader.js';
@@ -93,12 +92,6 @@ export class StartupState extends State
             composer.addPass(new RenderPass(scene, camera));
 
             //composer.addPass(new UnrealBloomPass(new THREE.Vector2(2048, 2048), 1, 0.4, 0.8));
-            
-            window.pixelPass = new ShaderPass(PixelShader);
-            pixelPass.uniforms['resolution'].value = new THREE.Vector2(window.innerWidth, window.innerHeight);
-            //pixelPass.uniforms['resolution'].value.multiplyScalar(window.devicePixelRatio);
-            pixelPass.uniforms['pixelSize'].value = 6;
-            composer.addPass(pixelPass);
 
             console.log("Three is ready.");
         }
