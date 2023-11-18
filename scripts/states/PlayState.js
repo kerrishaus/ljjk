@@ -24,6 +24,7 @@ export class PlayState extends State
                 <p>Press <kbd>P</kbd> to disable pixelation.</p>
                 <p>Press <kbd>V</kbd> to toggle rigid/smooth movement.</p>
                 <p>Press <kbd>O</kbd> to toggle free camera.</p>
+                <p>Press <kbd>space</kbd> to fire at the nearest enemy.</p>
             </div>
             <div class='debug'>
                 <p>player move: <span id='playerMove'>nil</span></p>
