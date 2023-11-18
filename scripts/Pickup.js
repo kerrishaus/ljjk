@@ -56,6 +56,8 @@ export class Pickup extends Triggerable
                 player.health += 5;
                 $("#health").val(player.health);
                 scene.remove(this);
+
+                scene.add(new Pickup(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0)));
             }
         }
     }

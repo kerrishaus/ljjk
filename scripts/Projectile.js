@@ -2,6 +2,7 @@ import { Plane, Raycaster, SphereGeometry, Mesh, MeshPhongMaterial, Vector2, Rep
 
 import { Player } from "./Player.js";
 import { Actor } from "./Actor.js";
+import { Enemy } from "./Enemy.js";
 
 export class Projectile extends Actor
 {
@@ -36,6 +37,12 @@ export class Projectile extends Actor
 
             if (this.target.health <= 0)
             {
+                if (this.target instanceof Enemy)
+                {
+                    let enemy = new Enemy(player);
+                    enemy.position.copy(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
+                    scene.add(enemy);
+                }
                 scene.remove(this.target);
             }
 
