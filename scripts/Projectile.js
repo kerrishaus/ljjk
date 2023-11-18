@@ -3,6 +3,7 @@ import { Plane, Raycaster, SphereGeometry, Mesh, MeshPhongMaterial, Vector2, Rep
 import { Player } from "./Player.js";
 import { Actor } from "./Actor.js";
 import { Enemy } from "./Enemy.js";
+import { Pickup } from "./Pickup.js";
 import * as MathUtility from "./MathUtility.js";
 
 export class Projectile extends Actor
@@ -43,6 +44,9 @@ export class Projectile extends Actor
                     let enemy = new Enemy(player);
                     enemy.position.copy(new Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
                     scene.add(enemy);
+
+                    if (MathUtility.getRandomInt(0, 100) + 1 > 50)
+                        scene.add(new Pickup(this.position));
 
                     if (player.lastAttacker = this.target)
                         player.lastAttacker = null;

@@ -2,6 +2,7 @@ import { PlaneGeometry, RepeatWrapping, Vector3, Quaternion, TextureLoader, Mesh
 
 import { Triggerable } from "./geometry/Triggerable.js";
 import { Player } from "./Player.js";
+import * as MathUtility from "./MathUtility.js";
 
 export class Pickup extends Triggerable
 {
@@ -26,7 +27,7 @@ export class Pickup extends Triggerable
         this.timeSinceSpriteUpdate = 0;
         this.spriteSheet = spriteSheet;
 
-        this.uses = 0;
+        this.uses = 1;
     }
     
     update(deltaTime)
@@ -56,8 +57,6 @@ export class Pickup extends Triggerable
                 player.health += 5;
                 $("#health").val(player.health);
                 scene.remove(this);
-
-                scene.add(new Pickup(new Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0)));
             }
         }
     }

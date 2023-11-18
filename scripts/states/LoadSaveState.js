@@ -46,8 +46,6 @@ export class LoadSaveState extends State
             let enemy = new Enemy(player);
             enemy.position.copy(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
             scene.add(enemy);
-
-            scene.add(new Pickup(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0)));
         }
 
         player.position.x = saveData.player.position.x;

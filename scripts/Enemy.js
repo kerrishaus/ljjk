@@ -54,9 +54,9 @@ export class Enemy extends Actor
                     const projectile = new Projectile(player, this.position, "purple_orb");
 
                     scene.add(projectile);
-
-                    player.lastAttacker = this;
                 }
+
+                player.lastAttacker = this;
             }
 
             this.position.lerp(this.targetPosition, 0.01);
