@@ -40,7 +40,7 @@ export class Projectile extends Actor
                 if (this.target instanceof Enemy)
                 {
                     let enemy = new Enemy(player);
-                    enemy.position.copy(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
+                    enemy.position.copy(new Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
                     scene.add(enemy);
                 }
                 scene.remove(this.target);
