@@ -6,10 +6,12 @@ import { CSS2DRenderer } from "https://kerrishaus.com/assets/threejs/examples/js
 
 import * as PageUtility from "../PageUtility.js";
 
+import * as MathUtility from "../MathUtility.js";
 import { PlayState } from "./PlayState.js";
 import { Player } from "../Player.js";
 import * as SaveLoader from "../SaveLoader.js";
 import { Tile } from "../tiles/Tile.js";
+import { Enemy } from "../Enemy.js";
 
 export class LoadSaveState extends State
 {
@@ -35,8 +37,18 @@ export class LoadSaveState extends State
         for (const tile of saveData.shop.tiles)
             this.loadTile(tile);
 
+        window.enemies = [];
+        
         window.player = new Player(camera);
         scene.add(player);
+
+        for (let i = 0; i < 10; i++)
+        {
+            let enemy = new Enemy(player);
+            enemy.targetPosition = new THREE.Vector3(MathUtility.getRandomInt(-10, 10), MathUtility.getRandomInt(-10, 10), MathUtility.getRandomInt(-10, 10));
+            window.enemies.push(enemy);
+            scene.add(enemy);
+        }
 
         player.position.x = saveData.player.position.x;
         player.position.y = saveData.player.position.y;

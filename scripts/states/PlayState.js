@@ -68,8 +68,6 @@ export class PlayState extends State
         };
         */
 
-        // below this line is proof of concept for scary game
-
         const floorGeometry = new THREE.PlaneGeometry(50, 50);
 
         const floorTexture  = new THREE.TextureLoader().load('textures/terrain/grassdirt-big.png');
