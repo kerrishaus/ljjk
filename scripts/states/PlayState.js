@@ -1,16 +1,10 @@
 import { State } from "./State.js";
 
 import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module.js";
-import { GLTFLoader } from 'https://kerrishaus.com/assets/threejs/examples/jsm/loaders/GLTFLoader.js';
 
-import * as MathUtility from "../MathUtility.js";
 import * as PageUtility from "../PageUtility.js";
 
-import * as Weather from "../Weather.js";
-
 import { Triggerable } from "../geometry/Triggerable.js";
-import { DialogTile } from "../tiles/DialogTile.js";
-import { Chest } from "../tiles/Chest.js";
 
 export class PlayState extends State
 {
@@ -46,6 +40,7 @@ export class PlayState extends State
                 </div>
             </div>
             <div class='player-stats'>
+                Healt <progress id="health" max="100" value="100" style="color: red;"></progress>
             </div>
         </div>`);
 
@@ -135,18 +130,6 @@ export class PlayState extends State
             ambientRain.setVolume( 0.2 );
             ambientRain.play();
         });
-
-        Weather.startRain();
-
-        // TODO: move this out of here later, this is just proof of concept
-
-        const dialog = new DialogTile("hello my name is tyler", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
-        dialog.position.x = 10;
-        scene.add(dialog);
-
-        const chest = new Chest("congration u found trasure");
-        chest.position.x = -10;
-        scene.add(chest);
 
         console.log("PlayState is ready.");
 

@@ -7,6 +7,7 @@ import * as GeometryUtil from "./geometry/GeometryUtility.js";
 
 import * as MathUtility from "./MathUtility.js";
 import { Actor } from "./Actor.js";
+import { Projectile } from "./Projectile.js";
 
 export class Player extends Actor
 {
@@ -136,6 +137,26 @@ export class Player extends Actor
                 console.log(`Toggled diagonal movement: ${this.diagonalMovementEnabled}`);
             }
             */
+            else if (event.code == "Space")
+            {
+                const distanceFromPlayer = this.position.distanceTo(this.lastAttacker?.position);
+
+                const COMBAT_RANGE = 6;
+        
+                // if the player is close enough to be targetted
+                if (distanceFromPlayer < COMBAT_RANGE)
+                {
+                    //if (this.timeSinceLastProjectile > 0.5)
+                    {
+                        console.log("Firing projectile at enemy.");
+                        this.timeSinceLastProjectile = 0;
+    
+                        const projectile = new Projectile(this.lastAttacker, this.position, "blue_orb");
+    
+                        scene.add(projectile);
+                    }
+                }
+            }
             else
             {
                 switch (event.code)
@@ -175,6 +196,12 @@ export class Player extends Actor
         this.maxSpeed = 0.2;
         this.slipperyness = 5;
         this.cameraHeight = 10;
+
+        this.health = 100;
+
+        this.lastAttacker = null;
+
+        this.timeSinceLastProjectile = 10;
     }
     
     update(deltaTime)
@@ -310,5 +337,7 @@ export class Player extends Actor
         this.camera.position.y = this.position.y;
         this.camera.position.z = this.position.z + this.cameraHeight;
         this.camera.lookAt(this.position);
+
+        this.timeSinceLastProjectile += deltaTime;
     }
 };

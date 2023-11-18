@@ -32,3 +32,14 @@ html, body
     overflow-x: hidden;
     overflow-y: hidden;
 }
+
+progress
+{
+    border-radius: 10px;
+    border: none;
+}
+
+::-moz-progress-bar
+{
+    background: red;
+}

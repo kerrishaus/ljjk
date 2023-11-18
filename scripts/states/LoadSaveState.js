@@ -2,16 +2,17 @@ import { State } from "./State.js";
 
 import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { CSS2DRenderer } from "https://kerrishaus.com/assets/threejs/examples/jsm/renderers/CSS2DRenderer.js";
-
 import * as PageUtility from "../PageUtility.js";
 
 import * as MathUtility from "../MathUtility.js";
 import { PlayState } from "./PlayState.js";
 import { Player } from "../Player.js";
 import * as SaveLoader from "../SaveLoader.js";
-import { Tile } from "../tiles/Tile.js";
 import { Enemy } from "../Enemy.js";
+import * as Weather from "../Weather.js";
+import { DialogTile } from "../tiles/DialogTile.js";
+import { Chest } from "../tiles/Chest.js";
+import { Pickup } from "../Pickup.js";
 
 export class LoadSaveState extends State
 {
@@ -37,17 +38,16 @@ export class LoadSaveState extends State
         for (const tile of saveData.shop.tiles)
             this.loadTile(tile);
 
-        window.enemies = [];
-        
         window.player = new Player(camera);
         scene.add(player);
 
         for (let i = 0; i < 10; i++)
         {
             let enemy = new Enemy(player);
-            enemy.targetPosition = new THREE.Vector3(MathUtility.getRandomInt(-10, 10), MathUtility.getRandomInt(-10, 10), MathUtility.getRandomInt(-10, 10));
-            window.enemies.push(enemy);
+            enemy.position.copy(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
             scene.add(enemy);
+
+            scene.add(new Pickup(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0)));
         }
 
         player.position.x = saveData.player.position.x;
@@ -57,6 +57,18 @@ export class LoadSaveState extends State
         player.rotation.x = saveData.player.rotation.x;
         player.rotation.y = saveData.player.rotation.y;
         player.rotation.z = saveData.player.rotation.z;
+
+        Weather.startRain();
+
+        // TODO: move this out of here later, this is just proof of concept
+
+        const dialog = new DialogTile("hello my name is tyler", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
+        dialog.position.x = 10;
+        scene.add(dialog);
+
+        const chest = new Chest("congration u found trasure");
+        chest.position.x = -10;
+        scene.add(chest);
 
         // TODO: load player inventory
         
