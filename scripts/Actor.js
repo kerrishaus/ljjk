@@ -1,5 +1,3 @@
-import { RepeatWrapping, TextureLoader } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
-
 import { DynamicMesh } from "./geometry/DynamicMesh.js";
 import { Spritesheet } from "./Spritesheet.js";
 

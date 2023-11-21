@@ -1,15 +1,14 @@
-import { Vector3, Quaternion, RepeatWrapping, TextureLoader, MeshStandardMaterial, PlaneGeometry } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { RepeatWrapping, TextureLoader, MeshStandardMaterial, PlaneGeometry } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { DialogBox } from "../dialog/DialogBox.js";
-
-import { Triggerable } from "../geometry/Triggerable.js";
+import { DialogBox } from "../DialogBox.js";
 import { Player } from "../Player.js";
+import { Tile } from "./Tile.js";
 
-export class DialogTile extends Triggerable
+export class DialogTile extends Tile
 {
-    constructor(message, position, size)
+    constructor(message, position)
     {
-        const geometry = new PlaneGeometry(size.x, size.y);
+        const geometry = new PlaneGeometry(1, 1);
 
         const spriteSheet = new TextureLoader().load('textures/sprites/player.png');
 
@@ -21,7 +20,7 @@ export class DialogTile extends Triggerable
 
         const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
-        super(geometry, material, size.x, size.y);
+        super(geometry, material);
 
         this.position.copy(position);
 

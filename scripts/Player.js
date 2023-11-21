@@ -1,19 +1,18 @@
-import { Plane, Raycaster, SphereGeometry, Mesh, MeshPhongMaterial, Vector2, RepeatWrapping, TextureLoader, PlaneGeometry, Vector3, Quaternion, BoxGeometry, MeshStandardMaterial, PerspectiveCamera } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { Plane, Raycaster, SphereGeometry, Mesh, MeshPhongMaterial, Vector2, PlaneGeometry, Vector3, MeshStandardMaterial } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { TransformControls } from 'https://kerrishaus.com/assets/threejs/examples/jsm/controls/TransformControls.js';
 import { OrbitControls } from 'https://kerrishaus.com/assets/threejs/examples/jsm/controls/OrbitControls.js';
 
-import * as GeometryUtil from "./geometry/GeometryUtility.js";
-
 import * as MathUtility from "./MathUtility.js";
-import { Actor } from "./Actor.js";
+
 import { Projectile } from "./Projectile.js";
+import { Enemy } from "./Enemy.js";
+import { Actor } from "./Actor.js";
 
 export class Player extends Actor
 {
     constructor(camera)
     {
-        const geometry = new PlaneGeometry(2, 2);
+        const geometry = new PlaneGeometry(1, 1);
         const material = new MeshStandardMaterial({ transparent: true });
 
         super(geometry, material);
@@ -137,9 +136,9 @@ export class Player extends Actor
                 console.log(`Toggled diagonal movement: ${this.diagonalMovementEnabled}`);
             }
             */
-            else if (event.code == "Space")
+            else if (event.code == "Space" && this.lastAttacker instanceof Enemy)
             {
-                const distanceFromPlayer = this.position.distanceTo(this.lastAttacker?.position);
+                const distanceFromPlayer = this.position.distanceTo(this.lastAttacker.position);
 
                 const COMBAT_RANGE = 6;
         

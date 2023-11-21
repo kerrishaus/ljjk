@@ -4,7 +4,7 @@ import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module
 
 import * as PageUtility from "../PageUtility.js";
 
-import { Triggerable } from "../geometry/Triggerable.js";
+import { TriggerableMesh } from "../geometry/TriggerableMesh.js";
 
 export class PlayState extends State
 {
@@ -32,6 +32,7 @@ export class PlayState extends State
                 <p>player move direction: <span id='playerMoveRigid'>false</span></p>
                 <p>player diagonal allowed: <span id='playerMoveDirection'>false</span></p>
                 <p>player delta: <span id='playerDelta'>nil</span></p>
+                <p>entity tick time: <span id='entityTickTime'>nil</span></p>
             </div>
             <div class='dialog-container no-mouse-passthrough'>
                 <div class='dialog-box hidden bottom'>
@@ -44,6 +45,8 @@ export class PlayState extends State
                 Healt <progress id="health" max="100" value="100" style="color: red;"></progress>
             </div>
         </div>`);
+
+        this.entityTickTimeText = $("#entityTickTime")[0];
 
         //$(document.body).append(`<div id="buyMenu" class="display-flex flex-wrap flex-gap" data-visiblity="hidden"></div>`);
 
@@ -154,14 +157,16 @@ export class PlayState extends State
 
     entityTick(deltaTime)
     {
+        const entityTickStartTime = performance.now();
+
         scene.children.forEach((object) =>
         {
             if ('update' in object)
                 object.update(deltaTime);
 
-            if (object instanceof Triggerable)
+            if (object instanceof TriggerableMesh)
             {
-                if (player.box.intersectsBox(object.trigger))
+                if (player.trigger.intersectsBox(object.trigger))
                 {
                     if (object.triggeringObjects.includes(player))
                         object.onTrigger(player);
@@ -170,29 +175,12 @@ export class PlayState extends State
                 }
                 else if (object.triggeringObjects.includes(player))
                     object.onStopTrigger(player);
-
-                /*
-                // TODO: change this to entity
-                for (const customer of shop.customers)
-                {
-                    // customer intersects with Triggerable's trigger
-                    if (object.trigger.intersectsBox(customer.box))
-                    {
-                        // object is not currently triggered by the customer
-                        if (!object.triggeringObjects.includes(customer))
-                            object.onTrigger(customer);
-                    }
-                    // customer is not intersecting with this trigger
-                    else
-                    {
-                        // if this trigger is triggered by the customer, stop triggering
-                        if (object.triggeringObjects.includes(customer))
-                            object.onStopTrigger(customer);
-                    }
-                }
-                */
             }
         });
+
+        const entityTickStopTime = performance.now();
+
+        this.entityTickTimeText.innerText = entityTickStopTime - entityTickStartTime;
     }
     
     animate()

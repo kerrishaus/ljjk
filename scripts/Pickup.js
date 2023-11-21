@@ -1,10 +1,9 @@
-import { PlaneGeometry, RepeatWrapping, Vector3, Quaternion, TextureLoader, MeshStandardMaterial } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { PlaneGeometry, RepeatWrapping, TextureLoader, MeshStandardMaterial } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { Triggerable } from "./geometry/Triggerable.js";
+import { Actor } from "./Actor.js";
 import { Player } from "./Player.js";
-import * as MathUtility from "./MathUtility.js";
 
-export class Pickup extends Triggerable
+export class Pickup extends Actor
 {
     constructor(position)
     {
@@ -20,7 +19,7 @@ export class Pickup extends Triggerable
 
         const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
-        super(geometry, material, 2, 2);
+        super(geometry, material);
 
         this.position.copy(position);
 

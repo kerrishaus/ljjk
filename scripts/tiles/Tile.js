@@ -1,9 +1,14 @@
-import { Triggerable } from "../geometry/Triggerable.js";
+import { Actor } from "../Actor.js";
 
-export class Tile extends Triggerable
+export class Tile extends Actor
 {
-    constructor(texture, size, position)
+    constructor(geometry, material)
     {
-        super();
+        super(geometry, material);
+    }
+
+    update(deltaTime)
+    {
+        super.update(deltaTime);
     }
 }

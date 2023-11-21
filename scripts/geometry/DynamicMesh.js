@@ -1,6 +1,8 @@
-import { Mesh, Box3 } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { Box3 } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-export class DynamicMesh extends Mesh
+import { TriggerableMesh } from "./TriggerableMesh.js";
+
+export class DynamicMesh extends TriggerableMesh
 {
     constructor(geometry, material)
     {
@@ -8,14 +10,10 @@ export class DynamicMesh extends Mesh
 
         this.castShadow = true;
         this.receiveShadow = true;
-
-        this.geometry.computeBoundingBox();
-
-        this.box = new Box3();
     }
     
     update(deltaTime)
     {
-        this.box.copy(this.geometry.boundingBox).applyMatrix4(this.matrixWorld);
+        super.update(deltaTime);
     }
 };

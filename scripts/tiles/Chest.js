@@ -1,11 +1,11 @@
 import { PlaneGeometry, RepeatWrapping, Vector3, Quaternion, TextureLoader, MeshStandardMaterial } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { DialogBox } from "../dialog/DialogBox.js";
-
-import { Triggerable } from "../geometry/Triggerable.js";
+import { DialogBox } from "../DialogBox.js";
 import { Player } from "../Player.js";
 
-export class Chest extends Triggerable
+import { ContainerTile } from "./ContainerTile.js";
+
+export class Chest extends ContainerTile
 {
     constructor(message, printSpeed)
     {
@@ -23,7 +23,7 @@ export class Chest extends Triggerable
 
         const material = new MeshStandardMaterial({ map: spriteSheet, transparent: true });
 
-        super(geometry, material, 2, 2);
+        super(geometry, material);
 
         this.spriteSheet = spriteSheet;
 

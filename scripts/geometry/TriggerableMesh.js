@@ -1,14 +1,12 @@
 import { BoxGeometry, MeshStandardMaterial, Mesh, Box3 } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { DynamicMesh } from "./DynamicMesh.js";
-
-export class Triggerable extends DynamicMesh
+export class TriggerableMesh extends Mesh
 {
-    constructor(geometry, material, triggerWidth, triggerLength)
+    constructor(geometry, material)
     {
         super(geometry, material);
         
-        const triggerGeometry = new BoxGeometry(triggerWidth, triggerLength, 0.1);
+        const triggerGeometry = new BoxGeometry(1, 1, 1);
         const triggerMaterial = new MeshStandardMaterial({ color: 0xff0000, transparent: true, opacity: 0.2 });
         
         this.triggerObject = new Mesh(triggerGeometry, triggerMaterial);
@@ -24,7 +22,7 @@ export class Triggerable extends DynamicMesh
     
     update(deltaTime)
     {
-        super.update(deltaTime);
+        //super.update(deltaTime);
         
         this.trigger.copy(this.triggerObject.geometry.boundingBox).applyMatrix4(this.triggerObject.matrixWorld);
     }
