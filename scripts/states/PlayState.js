@@ -132,14 +132,17 @@ export class PlayState extends State
             ambientMusic.setLoop( true );
             ambientMusic.setVolume( 0.5 );
             ambientMusic.play();
+            console.log("Loaded and played music.");
         });
 
+        // TODO: don't do this unless it's raining
         audioLoader.load( 'audio/music/rain.mp3', function(buffer)
         {
             ambientRain.setBuffer( buffer );
             ambientRain.setLoop( true );
             ambientRain.setVolume( 0.2 );
             ambientRain.play();
+            console.log("Loaded and played rain.");
         });
 
         console.log("PlayState is ready.");
