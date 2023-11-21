@@ -136,26 +136,6 @@ export class Player extends Actor
                 console.log(`Toggled diagonal movement: ${this.diagonalMovementEnabled}`);
             }
             */
-            else if (event.code == "Space" && this.lastAttacker instanceof Enemy)
-            {
-                const distanceFromPlayer = this.position.distanceTo(this.lastAttacker.position);
-
-                const COMBAT_RANGE = 6;
-        
-                // if the player is close enough to be targetted
-                if (distanceFromPlayer < COMBAT_RANGE)
-                {
-                    //if (this.timeSinceLastProjectile > 0.5)
-                    {
-                        console.log("Firing projectile at enemy.");
-                        this.timeSinceLastProjectile = 0;
-    
-                        const projectile = new Projectile(this.lastAttacker, this.position, "blue_orb");
-    
-                        scene.add(projectile);
-                    }
-                }
-            }
             else
             {
                 switch (event.code)
@@ -216,6 +196,28 @@ export class Player extends Actor
         {
             this.freeControls.update();
             return;
+        }
+
+        if (this.keys["Space"] && this.lastAttacker instanceof Enemy)
+        {
+            if (this.timeSinceLastProjectile > 0.3)
+            {
+                const distanceFromPlayer = this.position.distanceTo(this.lastAttacker.position);
+
+                const COMBAT_RANGE = 6;
+        
+                // if the player is close enough to be targetted
+                if (distanceFromPlayer < COMBAT_RANGE)
+                {
+                    console.debug("Fired at enemy.");
+                    
+                    scene.add(new Projectile(this.lastAttacker, this.position, "blue_orb"));
+                    
+                    this.timeSinceLastProjectile = 0;
+                }
+            }
+
+            this.timeSinceLastProjectile += deltaTime;
         }
 
         if (this.move)
