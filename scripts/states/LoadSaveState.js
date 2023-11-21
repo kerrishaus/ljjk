@@ -58,8 +58,6 @@ export class LoadSaveState extends State
         player.rotation.y = saveData.player.rotation.y;
         player.rotation.z = saveData.player.rotation.z;
 
-        Weather.startRain();
-
         // TODO: move this out of here later, this is just proof of concept
 
         const dialog = new DialogTile("What in the god damn? Now it's time for you to die!", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
