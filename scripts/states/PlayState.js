@@ -15,7 +15,7 @@ export class PlayState extends State
         PageUtility.addStyle("interface");
         PageUtility.addStyle("buyMenu");
         PageUtility.addStyle("rain");
-        PageUtility.addStyle("dialog/dialogBox");
+        PageUtility.addStyle("dialogBox");
 
         $(document.body).append(`
         <div class="interface-container mouse-passthrough">
@@ -35,8 +35,8 @@ export class PlayState extends State
                 <p>entity tick time: <span id='entityTickTime'>nil</span></p>
             </div>
             <div class='dialog-container no-mouse-passthrough'>
-                <div class='dialog-box hidden bottom'>
-                    <span class='dialog-message'>
+                <div id="dialogBox" class='bottom'>
+                    <span id='dialogMessage'>
                         If you ever see this text, someone got fired!
                     </span>
                 </div>
@@ -47,8 +47,6 @@ export class PlayState extends State
         </div>`);
 
         this.entityTickTimeText = $("#entityTickTime")[0];
-
-        //$(document.body).append(`<div id="buyMenu" class="display-flex flex-wrap flex-gap" data-visiblity="hidden"></div>`);
 
         this.clock = new THREE.Clock();
 

@@ -9,15 +9,13 @@ export class DialogBox
         this.open = false;
 
         this.message = message;
-
-        this.dialog = $(".dialog-box");
     }
 
     presentDialog()
     {
-        $(".dialog-message").empty();
+        $("#dialogMessage").empty();
 
-        this.dialog.removeClass("hidden");
+        $("#dialogBox").addClass("shown");
         this.open = true;
 
         setTimeout(() =>
@@ -29,7 +27,7 @@ export class DialogBox
 
             this.printInterval = setInterval(() =>
             {
-                $(".dialog-message").append(this.message[this.printIteration++]);
+                $("#dialogMessage").append(this.message[this.printIteration++]);
 
                 if (this.printIteration >= this.message.length)
                 {
@@ -47,7 +45,7 @@ export class DialogBox
 
     hideDialog()
     {
-        this.dialog.addClass("hidden");
+        $("#dialogBox").removeClass("shown");
 
         clearInterval(this.printInterval);
         this.printInterval = null;

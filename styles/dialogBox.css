@@ -1,4 +1,4 @@
-.dialog-box
+#dialogBox
 {
     --animation-time: 0.5s;
 
@@ -19,8 +19,6 @@
     margin-left: 10vw;
     margin-bottom: 3vw;
 
-    opacity: 1;
-
     transition: opacity var(--animation-time),
                 top var(--animation-time),
                 left var(--animation-time),
@@ -28,21 +26,13 @@
                 bottom var(--animation-time);
 }
 
-.dialog-box.bottom
+#dialogBox.bottom
 {
-    bottom: 0px;
+    bottom: -100vh;
     left: 0px;
 }
 
-.dialog-box.bottom.hidden
+#dialogBox.bottom.shown
 {
-    bottom: -100vh;
-}
-
-.dialog-box.hidden
-{
-    opacity: 0.5;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
+    bottom: 0;
 }
