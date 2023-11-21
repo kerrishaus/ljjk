@@ -13,7 +13,7 @@
     border: 10px solid transparent;
     border-image: url(../../textures/dialog/chatborder.png) 30 round;
 
-    padding: 50px;
+    padding: 20px;
 
     width: 80vw;
     margin-left: 10vw;
@@ -35,4 +35,32 @@
 #dialogBox.bottom.shown
 {
     bottom: 0;
+}
+
+#dialogButtons
+{
+    display: none;
+
+    text-align: right;
+}
+
+#dialogButtons.shown
+{
+    display: block;
+}
+
+#dialogButtons .dialog-button:focus
+{
+    position: relative;
+    bottom: 0;
+
+    animation: dialogButtonFocus 1s infinite alternate-reverse;
+}
+
+@keyframes dialogButtonFocus
+{
+    to
+    {
+        bottom: -5px;
+    }
 }

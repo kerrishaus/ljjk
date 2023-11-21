@@ -1,24 +1,38 @@
 export class DialogBox
 {
-    constructor(message, printSpeed = 50, printDelay = 400)
+    constructor(options)
     {
-        this.printSpeed = printSpeed;
-        this.printInterval = null;
-        this.printDelay = printDelay;
-        this.printIteration = 0;
-        this.open = false;
+        this.printSpeed    = options.printSpeed ?? 50;
+        this.printDelay    = options.printDelay ?? 400;
 
-        this.message = message;
+        this.printDelay     = null;
+        this.printInterval  = null;
+        this.printIteration = 0;
+        this.open           = false;
+
+        this.message = options.message;
+        this.buttons = options.buttons ?? [];
     }
 
     presentDialog()
     {
         $("#dialogMessage").empty();
+        $("#dialogButtons").empty();
+
+        for (const button of this.buttons)
+        {
+            console.log(button);
+            const buttonElement = $("<button class='dialog-button'>").appendTo($("#dialogButtons"));
+            buttonElement.text(button.message);
+            buttonElement.on("click", button.onClick);
+        }
 
         $("#dialogBox").addClass("shown");
+        $("#dialogButtons").removeClass("shown");
+
         this.open = true;
 
-        setTimeout(() =>
+        this.printTimeout = setTimeout(() =>
         {
             if (!this.open)
                 return;
@@ -35,6 +49,9 @@ export class DialogBox
                     this.printInterval = null;
                     console.log("done printing");
 
+                    $("#dialogButtons").addClass("shown");
+                    $("#dialogButtons").children(".dialog-button:last-child").focus();
+
                     // TODO: add a close button to the dialog at this point
                 }
             }, this.printSpeed);
@@ -46,7 +63,13 @@ export class DialogBox
     hideDialog()
     {
         $("#dialogBox").removeClass("shown");
+        $("#dialogButtons").removeClass("shown");
 
+        $("#dialogMessage").empty();
+        $("#dialogButtons").empty();
+
+        clearInterval(this.printTimeout);
+        this.printTimeout  = null;
         clearInterval(this.printInterval);
         this.printInterval = null;
 

@@ -41,12 +41,14 @@ export class LoadSaveState extends State
         window.player = new Player(camera);
         scene.add(player);
 
+        /*
         for (let i = 0; i < 10; i++)
         {
             let enemy = new Enemy(player);
             enemy.position.copy(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
             scene.add(enemy);
         }
+        */
 
         player.position.x = saveData.player.position.x;
         player.position.y = saveData.player.position.y;
@@ -60,7 +62,7 @@ export class LoadSaveState extends State
 
         // TODO: move this out of here later, this is just proof of concept
 
-        const dialog = new DialogTile("hello my name is tyler", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
+        const dialog = new DialogTile("What in the god damn? Now it's time for you to die!", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
         dialog.position.x = 10;
         scene.add(dialog);
 

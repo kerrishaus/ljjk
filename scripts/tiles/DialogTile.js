@@ -1,7 +1,11 @@
-import { RepeatWrapping, TextureLoader, MeshStandardMaterial, PlaneGeometry } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { Vector3, RepeatWrapping, TextureLoader, MeshStandardMaterial, PlaneGeometry } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+
+import * as MathUtility from "../MathUtility.js";
+import * as Weather from "../Weather.js";
 
 import { DialogBox } from "../DialogBox.js";
 import { Player } from "../Player.js";
+import { Enemy } from "../Enemy.js";
 import { Tile } from "./Tile.js";
 
 export class DialogTile extends Tile
@@ -26,7 +30,29 @@ export class DialogTile extends Tile
 
         this.name = "dialog";
 
-        this.dialog = new DialogBox(message);
+        this.dialog = new DialogBox({ message: message, buttons: [
+            {
+                message: "Oh fuck!",
+                onClick: () =>
+                {
+                    for (let i = 0; i < 10; i++)
+                    {
+                        let enemy = new Enemy(player);
+                        enemy.position.copy(new Vector3(MathUtility.getRandomInt(-10, 10), MathUtility.getRandomInt(-10, 10), 0));
+                        scene.add(enemy);
+                    }
+
+                    Weather.startRain();
+                    Weather.lightning();
+
+                    this.stopDialog();
+
+                    scene.remove(this);
+                    this.remove();
+                }
+            }
+        ] });
+
         this.printInterval = null;
     }
     

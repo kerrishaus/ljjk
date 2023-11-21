@@ -39,6 +39,15 @@ export class PlayState extends State
                     <span id='dialogMessage'>
                         If you ever see this text, someone got fired!
                     </span>
+                    <div id="dialogButtons">
+                        <!-- // TODO: don't let the user tab into the url bar -->
+                        <button id="dialogYesButton" class="dialog-button" tabindex="2">
+                            Yes
+                        </button>
+                        <button id="dialogNoButton" class="dialog-button" tabindex="1">
+                            No
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class='player-stats'>

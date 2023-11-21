@@ -29,7 +29,7 @@ export class Chest extends ContainerTile
 
         this.name = "dialog";
 
-        this.dialog = new DialogBox(message, printSpeed);
+        this.dialog = new DialogBox({ message: message, printSpeed: printSpeed });
         this.printSpeed = printSpeed;
         this.printInterval = null;
     }
