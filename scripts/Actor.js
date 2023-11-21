@@ -1,9 +1,9 @@
 import { RepeatWrapping, TextureLoader } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import { ItemCarrier } from "./ItemCarrier.js";
+import { DynamicMesh } from "./geometry/DynamicMesh.js";
 import { Spritesheet } from "./Spritesheet.js";
 
-export class Actor extends ItemCarrier
+export class Actor extends DynamicMesh
 {
     constructor(geometry, material)
     {
