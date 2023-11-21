@@ -6,7 +6,7 @@ export class TriggerableMesh extends Mesh
     {
         super(geometry, material);
         
-        const triggerGeometry = new BoxGeometry(1, 1, 1);
+        const triggerGeometry = new BoxGeometry(1, 1, 0.1);
         const triggerMaterial = new MeshStandardMaterial({ color: 0xff0000, transparent: true, opacity: 0.2 });
         
         this.triggerObject = new Mesh(triggerGeometry, triggerMaterial);
