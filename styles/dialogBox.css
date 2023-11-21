@@ -11,7 +11,7 @@
     color: rgb(182, 182, 182);
 
     border: 10px solid transparent;
-    border-image: url(../../textures/dialog/chatborder.png) 30 round;
+    border-image: url(../textures/dialog/chatborder.png) 30 round;
 
     padding: 20px;
 
