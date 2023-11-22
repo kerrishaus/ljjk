@@ -4,15 +4,12 @@ import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module
 
 import * as PageUtility from "../PageUtility.js";
 
-import * as MathUtility from "../MathUtility.js";
 import { PlayState } from "./PlayState.js";
 import { Player } from "../Player.js";
 import * as SaveLoader from "../SaveLoader.js";
-import { Enemy } from "../Enemy.js";
 import * as Weather from "../Weather.js";
 import { DialogTile } from "../tiles/DialogTile.js";
 import { Chest } from "../tiles/Chest.js";
-import { Pickup } from "../Pickup.js";
 
 export class LoadSaveState extends State
 {
@@ -32,23 +29,11 @@ export class LoadSaveState extends State
 
         const saveData = JSON.parse(SaveLoader.saveDataRaw);
 
-        //window.shop = new Shop(saveData.shop);
-        //scene.add(shop);
-
         for (const tile of saveData.shop.tiles)
             this.loadTile(tile);
 
         window.player = new Player(camera);
         scene.add(player);
-
-        /*
-        for (let i = 0; i < 10; i++)
-        {
-            let enemy = new Enemy(player);
-            enemy.position.copy(new THREE.Vector3(MathUtility.getRandomInt(-15, 15), MathUtility.getRandomInt(-15, 15), 0));
-            scene.add(enemy);
-        }
-        */
 
         player.position.x = saveData.player.position.x;
         player.position.y = saveData.player.position.y;

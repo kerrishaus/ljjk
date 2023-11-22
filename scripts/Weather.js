@@ -1,5 +1,5 @@
 window.startRain = startRain;
-window.stopRain = stopRain;
+window.stopRain  = stopRain;
 window.lightning = lightning;
 
 export function startRain()
