@@ -24,7 +24,9 @@ export class DialogBox
             console.log(button);
             const buttonElement = $("<button class='dialog-button'>").appendTo($("#dialogButtons"));
             buttonElement.text(button.message);
-            buttonElement.on("click", button.onClick);
+
+            if ("onClick" in button)
+                buttonElement.on("click", button.onClick);
         }
 
         $("#dialogBox").addClass("shown");

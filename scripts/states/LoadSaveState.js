@@ -7,9 +7,7 @@ import * as PageUtility from "../PageUtility.js";
 import { PlayState } from "./PlayState.js";
 import { Player } from "../Player.js";
 import * as SaveLoader from "../SaveLoader.js";
-import * as Weather from "../Weather.js";
-import { DialogTile } from "../tiles/DialogTile.js";
-import { Chest } from "../tiles/Chest.js";
+import { loadTiles } from "../WorldLoader.js";
 
 export class LoadSaveState extends State
 {
@@ -26,11 +24,17 @@ export class LoadSaveState extends State
         document.body.appendChild(this.loadingDiv);
 
         const saveVersion = 1;
+        
+        const saveData  = JSON.parse(SaveLoader.saveDataRaw);
 
-        const saveData = JSON.parse(SaveLoader.saveDataRaw);
+        if (saveData.saveFormatVersion != saveVersion)
+        {
+            console.error("Incompatible save versions.");
+            return;
+        }
 
-        for (const tile of saveData.shop.tiles)
-            this.loadTile(tile);
+        console.log("Tile preload");
+        loadTiles(saveData);
 
         window.player = new Player(camera);
         scene.add(player);
@@ -42,16 +46,6 @@ export class LoadSaveState extends State
         player.rotation.x = saveData.player.rotation.x;
         player.rotation.y = saveData.player.rotation.y;
         player.rotation.z = saveData.player.rotation.z;
-
-        // TODO: move this out of here later, this is just proof of concept
-
-        const dialog = new DialogTile("What in the god damn? Now it's time for you to die!", new THREE.Vector3(10, 0, 0), new THREE.Vector2(2, 2));
-        dialog.position.x = 10;
-        scene.add(dialog);
-
-        const chest = new Chest("congration u found trasure");
-        chest.position.x = -10;
-        scene.add(chest);
 
         // TODO: load player inventory
         
@@ -69,7 +63,7 @@ export class LoadSaveState extends State
         console.log("LoadingState cleaned up.");
     }
 
-    loadTile(tile)
+    loadActor(tile)
     {
         let newTile = null
 

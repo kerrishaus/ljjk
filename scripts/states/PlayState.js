@@ -74,6 +74,7 @@ export class PlayState extends State
         };
         */
 
+        /*
         const floorGeometry = new THREE.PlaneGeometry(50, 50);
 
         const floorTexture  = new THREE.TextureLoader().load('textures/terrain/grassdirt-big.png');
@@ -86,6 +87,7 @@ export class PlayState extends State
         floor.position.z = 0;
 
         scene.add(floor);
+        */
 
         /*
         scene.fog = new THREE.Fog( 0x000000, 0.004, 20 ); 

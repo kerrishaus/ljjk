@@ -71,7 +71,7 @@ export class PhysicsScene extends Scene
                 if (distance > 0.0)
                     continue;
 
-                console.log({ manifoldIndex: i, contactIndex: j, distance: distance });
+                //console.log({ manifoldIndex: i, contactIndex: j, distance: distance });
             }
         }
     }

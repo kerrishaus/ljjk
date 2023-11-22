@@ -1,102 +1,39 @@
 export const saveDataRaw = 
 `
 {
-    "version":1,
+    "saveFormatVersion":1,
+    "level":"Home",
     "world":{
         "tiles":[
-
+            {
+                "type":"plane",
+                "spritesheets":[
+                    "textures/terrain/grassdirt-big.png"
+                ],
+                "width":"50",
+                "height":"50",
+                "position":{
+                    "x":0,
+                    "y":0,
+                    "z":0
+                }
+            },
+            {
+                "type":"DialogTile",
+                "message":"What in the god damn? Now it's time for you to die!",
+                "buttons":[
+                    {
+                        "message":"Oh fuck!"
+                    }
+                ],
+                "position":{
+                    "x":5,
+                    "y":5
+                }
+            }
         ],
         "entities":[
 
-        ]
-    },
-    "shop":{
-        "type":1,
-        "money":25,
-        "maxCustomers":20,
-        "timeUntilNextCustomer":14,
-        "timeSinceLastCustomer":0,
-        "minTimeUntilNextCustomer":7,
-        "maxTimeUntilNextCustomer":20,
-        "lifeSales":0,
-        "lifeCustomers":0,
-        "lifeReputation":0,
-        "tiles":[
-            {
-                "type":"tomatoStand",
-                "position":{
-                    "x":0,
-                    "y":0,
-                    "z":0
-                },
-                "amount":0
-            },
-            {
-                "type":"recycleBin",
-                "position":{
-                    "x":-9,
-                    "y":9,
-                    "z":0
-                },
-                "amount":0
-            }
-        ],
-        "customers":[
-            {
-                "reputation":0,
-                "position":{
-                    "x":0,
-                    "y":0,
-                    "z":0
-                },
-                "rotation":{
-                    "x":0,
-                    "y":0,
-                    "z":0
-                },
-                "carriedItems":[
-                    {
-                        "type":"tomato"
-                    }
-                ],
-                "actions":[
-                    {
-                        "name":"",
-                        "type":"",
-                        "amount":0,
-                        "container":0,
-                        "position":{
-                            "x":0,
-                            "y":0,
-                            "z":0
-                        }
-                    }
-                ]
-            }
-        ],
-        "employees":[
-            {
-                "position":{
-                    "x":0,
-                    "y":0,
-                    "z":0.5
-                },
-                "rotation":{
-                    "x":0,
-                    "y":0,
-                    "z":0
-                },
-                "carriedItems":[
-                    {
-                        "type":"tomato"
-                    }
-                ],
-                "actions":[
-                    {
-
-                    }
-                ]
-            }
         ]
     },
     "player":{
@@ -109,13 +46,7 @@ export const saveDataRaw =
             "x":0,
             "y":0,
             "z":0
-        },
-        "inventory":[
-            {
-                "itemid":1,
-                "quantity": 10
-            }
-        ]
+        }
     }
 }
 `;

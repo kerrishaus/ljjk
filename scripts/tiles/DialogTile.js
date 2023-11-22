@@ -10,7 +10,7 @@ import { Tile } from "./Tile.js";
 
 export class DialogTile extends Tile
 {
-    constructor(message, position)
+    constructor(dialog)
     {
         const geometry = new PlaneGeometry(1, 1);
 
@@ -26,10 +26,9 @@ export class DialogTile extends Tile
 
         super(geometry, material);
 
-        this.position.copy(position);
-
         this.name = "dialog";
 
+        /*
         this.dialog = new DialogBox({ message: message, buttons: [
             {
                 message: "Oh fuck!",
@@ -52,6 +51,8 @@ export class DialogTile extends Tile
                 }
             }
         ] });
+        */
+        this.dialog = dialog;
 
         this.printInterval = null;
     }
