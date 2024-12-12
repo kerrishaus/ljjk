@@ -23,7 +23,8 @@ export const saveDataRaw =
                 "message":"What in the god damn? Now it's time for you to die!",
                 "buttons":[
                     {
-                        "message":"Oh fuck!"
+                        "message":"Oh fuck!",
+                        "onClickMessage":"dieTime"
                     }
                 ],
                 "position":{
